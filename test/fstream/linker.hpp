@@ -1,3 +1,11 @@
+static const size_t PREDICATE_DESCRIPTOR_SIZE = 104;/* sizeof(code_size_t) +
+                                                       PRED_DESCRIPTOR_BASE_SIZE +
+                                                       PRED_ARGS_MAX +
+                                                       PRED_NAME_SIZE_MAX +
+                                                       PRED_AGG_INFO_MAX;*/
+
+
+
 const int MAX_CHARS_PER_LINE = 512;
 const int MAX_TOKENS_PER_LINE = 3;
 const char* const DELIMITER = " ";
@@ -21,6 +29,7 @@ char *buffer;
 char dummy_path[] = "/home/rupesh/ls.o";
 long size;
 int num_of_lines = 0;
+code_size_t const_code_size;
 
 struct func_table{
 char func_name[254];

@@ -1,3 +1,0 @@
-total file size test.m : 3921 bytes
-total file size output.m : 3921 bytes
-/home/rupesh/home/rupesh/ls.o
