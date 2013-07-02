@@ -307,8 +307,25 @@ int main(int argc,char **argv) {
                 READ_CODE(&skip_ptr, sizeof(skip_ptr));
                 WRITE_CODE(&skip_ptr,sizeof(skip_ptr));
 
+                uint_val num_args;
+
+                READ_CODE(&num_args, sizeof(num_args));
+                WRITE_CODE(&num_args,sizeof(num_args));
+
+                cout << "Id : " << extern_id << " Name :" << extern_name << endl;
+                cout<<"Num args : "<<num_args<<endl;
+
+                for(uint_val j(0); j != num_args + 1; ++j) {
+                    byte b;
+                    READ_CODE(&b, sizeof(byte));
+                    WRITE_CODE(&b,sizeof(byte));
+
+                    field_type type = (field_type)b;
+                    cout << field_type_string(type) << ", ";
+                }
+                cout << endl;
+
                 position_prev = position;
-                cout << "Id " << extern_id << " " << extern_name << endl;
             }
         }
     }

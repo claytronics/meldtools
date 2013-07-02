@@ -37,3 +37,39 @@ char file_name[1024];
 };
 
 char* get_filename(char *func_name,struct func_table* table,int size);
+
+enum field_type {
+   FIELD_INT = 0x0,
+   FIELD_FLOAT = 0x1,
+   FIELD_NODE = 0x2,
+   FIELD_LIST_INT = 0x3,
+   FIELD_LIST_FLOAT = 0x4,
+   FIELD_LIST_NODE = 0x5,
+   FIELD_WORKER = 0x6,
+    FIELD_STRING = 0x9
+};
+
+
+char*
+field_type_string(field_type type)
+{
+   switch(type) {
+      case FIELD_INT: return "int";
+      case FIELD_FLOAT: return "float";
+      case FIELD_NODE: return "node";
+      case FIELD_LIST_INT: return "int list";
+      case FIELD_LIST_FLOAT: return "float list";
+        case FIELD_LIST_NODE: return "node list";
+      case FIELD_WORKER: return "worker";
+        case FIELD_STRING: return "string";
+      default:
+           return "Unrecognized field type"; 
+//         throw type_error("Unrecognized field type " + to_string(type) +"(field_type_string)");
+    }
+
+   assert(false);
+   return "";
+}
+
+
+
