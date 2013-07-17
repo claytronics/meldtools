@@ -2,9 +2,11 @@
  (name mangling in C++)
 
 * export LD_LIBRARY_PATH=`pwd`
-* g++ -c -fPIC hello.c -o hello.o
+* g++ -c -fPIC hello.cpp -o hello.o
 * g++ hello.o -shared -o hello.so
 * g++ main.cpp -ldl -o test_hello
+
+* copy the .so file in /usr/lib
 
 sources :
 http://www.isotton.com/devel/docs/C++-dlopen-mini-HOWTO/C++-dlopen-mini-HOWTO.html

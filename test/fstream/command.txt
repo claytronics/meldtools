@@ -1,0 +1,2 @@
+(cl-meld:meld-compile "/home/rupesh/blinkybot/tools_meld/meldtools/test/fstream/test.meld" "/home/rupesh/blinkybot/tools_meld/meldtools/test/fstream/test")
+(cl-meld:meld-compile "/home/rupesh/blinkybot/tools_meld/meldtools/test/fstream/tap_propagate.meld" "/home/rupesh/blinkybot/tools_meld/meldtools/test/fstream/tap_propagate")

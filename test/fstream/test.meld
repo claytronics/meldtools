@@ -5,4 +5,4 @@ extern int intb(int).
  
 f(@0, 2).
  
-f(A, N) -o g(A, inta(N,N,N) + intb(N) + intpower(N, 3)).
+f(A, N) -o g(A, inta(N,N,N) + intb(N) + intpower(N,2)).
