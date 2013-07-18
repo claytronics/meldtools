@@ -1,3 +1,4 @@
+#include<algorithm>
 
 #include "vm/predicate.hpp"
 #include "vm/instr.hpp"
@@ -565,12 +566,13 @@ void dependency_print(){
     uint32_t i,j;
 
 
-    for(i = 0; i < dependency.size();i++) 
+/*    for(i = 0; i < dependency.size();i++) 
         for(j = i + 1; j < dependency.size();j++) 
             if(!dependency[i].compare(dependency[j]))
-                dependency.erase(dependency.begin() + (i-1));
-
-
+                dependency.erase(dependency.begin() + (j-1));
+*/
+    std::sort(dependency.begin(),dependency.end());
+    dependency.erase(std::unique(dependency.begin(),dependency.end()),dependency.end());
 
     for(j = 0; j < dependency.size();j++) 
         cout<<dependency[j]<<endl;
