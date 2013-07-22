@@ -1,2 +1,6 @@
-(cl-meld:meld-compile "/home/rupesh/blinkybot/tools_meld/meldtools/test/fstream/test.meld" "/home/rupesh/blinkybot/tools_meld/meldtools/test/fstream/test")
+(cl-meld:meld-compile "/home/rupesh/blinkybot/tools_meld/meldtools/test/fstream/IEtest.meld" "/home/rupesh/blinkybot/tools_meld/meldtools/test/fstream/IEtest")
 (cl-meld:meld-compile "/home/rupesh/blinkybot/tools_meld/meldtools/test/fstream/tap_propagate.meld" "/home/rupesh/blinkybot/tools_meld/meldtools/test/fstream/tap_propagate")
+(cl-meld:meld-compile "/home/rupesh/blinkybot/tools_meld/meldtools/test/fstream/test.meld" "/home/rupesh/blinkybot/tools_meld/meldtools/test/fstream/test_new")
+(cl-meld:meld-compile "/home/rupesh/blinkybot/tools_meld/meldtools/test/fstream/file3.meld" "/home/rupesh/blinkybot/tools_meld/meldtools/test/fstream/file3")
+(cl-meld:meld-compile "/home/rupesh/blinkybot/tools_meld/meldtools/test/fstream/file2.meld" "/home/rupesh/blinkybot/tools_meld/meldtools/test/fstream/file2")
+(cl-meld:meld-compile "/home/rupesh/blinkybot/tools_meld/meldtools/test/fstream/file1.meld" "/home/rupesh/blinkybot/tools_meld/meldtools/test/fstream/file1")

@@ -27,7 +27,12 @@ class import
             const std::string& _file):
          imp(_imp), as(_as), file(_file)
       {
+        file.append(".m");
       }
+
+      inline std::string get_imp(void) const { return imp; }   
+      inline std::string get_as(void) const { return as; }   
+      inline std::string get_file(void) const { return file; }   
 };
 
 inline std::ostream&

@@ -731,10 +731,14 @@ program::print_predicate_dependency(){
 
         if(print_code)
             rules[i]->print(cout,this);
-        else
+        else{
             cout<<rules[i]->get_string()<<endl;
+            rules[i]->print(cnull,this);
+        }    
 
-        cout<<endl;
+        cout<<"Rule depends on : "<<endl;
+        dependency_print();
+        cout<<endl;   
     }
 
 

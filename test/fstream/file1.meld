@@ -1,0 +1,9 @@
+type linear x(node,int).
+type linear y(node,int).
+type linear z(node,int).
+export x.
+
+x(A,N) -o y(A,N).
+y(A,N) -o z(A,N).
+
+

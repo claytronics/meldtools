@@ -110,6 +110,16 @@ public:
       return functions[id];
    }
 
+    inline import *get_imported_predicate(const size_t id) const {
+     assert(id < imported_predicates.size());
+     return imported_predicates[id];
+    }
+
+    inline std::string get_exported_predicate(const size_t id) const {
+      assert(id < exported_predicates.size());  
+      return exported_predicates[id];  
+    } 
+
    inline field_type get_priority_type(void) const { return priority_type; }
    inline strat_level get_priority_strat_level(void) const { return priority_strat_level; }
 	inline bool is_priority_asc(void) const { return priority_order == PRIORITY_ASC; }
@@ -142,6 +152,8 @@ public:
    
    size_t num_predicates(void) const { return predicates.size(); }
    size_t num_route_predicates(void) const { return route_predicates.size(); }
+   size_t num_imported_predicates(void) const { return imported_predicates.size(); } 
+   size_t num_exported_predicates(void) const { return exported_predicates.size(); } 
 
 	inline runtime::rstring::ptr get_default_string(const size_t i) const
 	{

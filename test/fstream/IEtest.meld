@@ -1,0 +1,9 @@
+type linear f(node, int).
+type linear g(node, int).
+
+export f.
+import linear x(node, int) as y from file1.
+
+f(@0, 2).
+
+f(A, N), y(A, N) -o g(A, N).

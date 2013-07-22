@@ -110,7 +110,7 @@ SRCS = utils/utils.cpp \
 
 OBJS = $(patsubst %.cpp,%.o,$(SRCS))
 
-all: meld print predicates server simulator
+all: meld print predicates merge server simulator
 	echo $(OBJS)
 
 -include Makefile.externs
@@ -129,6 +129,9 @@ print: $(OBJS) print.o
 predicates: $(OBJS) predicates.o
 	$(COMPILE) predicates.o -o predicates $(LDFLAGS)
 
+merge: $(OBJS) merge.o
+	$(COMPILE) merge.o -o merge $(LDFLAGS)
+
 server: $(OBJS) server.o
 	$(COMPILE) server.o -o server $(LDFLAGS)
 
@@ -140,6 +143,6 @@ depend:
 
 clean:
 	find . -name '*.o' | xargs rm -f
-	rm -f meld predicates print server Makefile.externs
+	rm -f meld predicates merge print server Makefile.externs
 # DO NOT DELETE
 

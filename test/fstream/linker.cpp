@@ -37,7 +37,7 @@ using namespace std;
     WRITE_CODE(buffer,(TO - FROM)); \
 } while(false)
 
-
+#define VERSION_AT_LEAST(MAJ, MIN) (major_version > (MAJ) || (major_version == (MAJ) && minor_version >= (MIN)))
 int main(int argc,char **argv) {
 
     if(argc != 4){
@@ -164,7 +164,7 @@ int main(int argc,char **argv) {
     READ_CODE(&major_version, sizeof(uint32_t));
     READ_CODE(&minor_version, sizeof(uint32_t));
 
-    if(major_version == 0 && minor_version < 5){
+   if(!VERSION_AT_LEAST(0, 5) || VERSION_AT_LEAST(0, 10)){
         cout<<"Error : unsupported byte code version\n";
         infile_m.close();
         infile_md.close();
@@ -185,6 +185,49 @@ int main(int argc,char **argv) {
     READ_CODE(&num_nodes, sizeof(uint_val));
 
     SEEK_CODE(num_nodes * 8);
+
+   // read imported/exported predicates
+   if(VERSION_AT_LEAST(0, 9)) {
+      uint32_t number_imported_predicates;
+
+      READ_CODE(&number_imported_predicates, sizeof(number_imported_predicates));
+
+      for(uint32_t i(0); i < number_imported_predicates; ++i) {
+         uint32_t size;
+         READ_CODE(&size, sizeof(size));
+
+         char buf_imp[size + 1];
+         READ_CODE(buf_imp, size);
+         buf_imp[size] = '\0';
+
+         READ_CODE(&size, sizeof(size));
+         char buf_as[size + 1];
+         READ_CODE(buf_as, size);
+         buf_as[size] = '\0';
+
+         READ_CODE(&size, sizeof(size));
+         char buf_file[size + 1];
+         READ_CODE(buf_file, size);
+         buf_file[size] = '\0';
+
+         cout << "import " << buf_imp << " as " << buf_as << " from " << buf_file << endl;
+      }
+
+      uint32_t number_exported_predicates;
+
+      READ_CODE(&number_exported_predicates, sizeof(number_exported_predicates));
+
+      for(uint32_t i(0); i < number_exported_predicates; ++i) {
+         uint32_t str_size;
+         READ_CODE(&str_size, sizeof(str_size));
+         char buf[str_size + 1];
+         READ_CODE(buf, str_size);
+         buf[str_size] = '\0';
+    
+         cout << "export " << buf << endl;
+      }
+     
+   }
 
     // get number of args needed
     byte n_args;
@@ -245,7 +288,7 @@ int main(int argc,char **argv) {
     position_prev = position;
 
 
-    if(major_version > 0 || (major_version == 0 && minor_version >= 6)) {
+    if(VERSION_AT_LEAST(0, 6)) {
         // get function code
         uint_val n_functions;
 

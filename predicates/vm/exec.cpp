@@ -1738,7 +1738,7 @@ execute_call(pcounter pc, state& state)
 static inline void
 execute_calle(pcounter pc, state& state)
 {
-   #define REGISTER_OFFSET 35 
+   #define REGISTER_OFFSET 38 
    pcounter m(pc + CALL_BASE);
    const external_function_id id(call_extern_id(pc) + REGISTER_OFFSET);
    const size_t num_args(call_num_args(pc));
