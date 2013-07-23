@@ -727,7 +727,7 @@ program::add_data_file(program& other)
 void 
 program::print_predicate_dependency(){
 
-    size_t i,j,k;
+    size_t i,j;
 
     for(i = 0; i < number_rules;i++){
 
