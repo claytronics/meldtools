@@ -1,0 +1,5 @@
+type linear w(node,int).
+import linear x(node,int) as xi from file1.
+
+w(@0,2).
+w(A,N) -o xi(A,N).

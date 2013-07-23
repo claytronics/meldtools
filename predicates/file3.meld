@@ -1,0 +1,9 @@
+type linear x(node,int).
+type linear y(node,int).
+type linear w(node,int).
+type linear z(node,int).
+
+w(@0,2).
+w(A,N) -o x(A,N).
+x(A,N) -o y(A,N).
+y(A,N) -o z(A,N).

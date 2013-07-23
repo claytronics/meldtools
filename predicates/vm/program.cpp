@@ -402,6 +402,7 @@ program::program(const string& _filename):
 
 program::~program(void)
 {
+
    for(size_t i(0); i < num_predicates(); ++i) {
       delete predicates[i];
       delete []code[i];
@@ -409,14 +410,17 @@ program::~program(void)
 	for(size_t i(0); i < num_rules(); ++i) {
 		delete rules[i];
 	}
-   if(data_rule != NULL)
       delete data_rule;
+
    for(size_t i(0); i < functions.size(); ++i) {
       delete functions[i];
+
    }
 	delete []const_code;
+
    for(size_t i(0); i < imported_predicates.size(); ++i) {
       delete imported_predicates[i];
+
    }
    MAX_STRAT_LEVEL = 0;
 }

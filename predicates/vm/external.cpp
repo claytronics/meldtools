@@ -27,6 +27,7 @@ typedef unordered_map<external_function_id, external_function*> hash_external_ty
 static external_function_id external_counter(0);   
 static hash_external_type hash_external;
 //static bool dummy(init_external_functions());
+static bool external_functions_initialised(false);
 
 void
 external_function::set_arg_type(const size_t arg, const field_type typ)
@@ -118,6 +119,10 @@ cleanup_externals(void)
 bool
 init_external_functions(void)
 {
+   if(external_functions_initialised) 
+    return true;
+   else external_functions_initialised = true; 
+
 #define EXTERN(NAME) (external_function_ptr) external :: NAME
 #define EXTERNAL0(NAME, RET) external0(EXTERN(NAME), RET)
 #define EXTERNAL1(NAME, RET, ARG1) external1(EXTERN(NAME), RET, ARG1)
