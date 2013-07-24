@@ -93,7 +93,6 @@ private:
 public:
     
    strat_level MAX_STRAT_LEVEL;
-
     bool print_code;
    inline size_t num_rules(void) const { return number_rules; }
 	inline size_t num_args_needed(void) const { return num_args; }
@@ -147,6 +146,12 @@ public:
       assert(id < num_predicates());
       return code[id];
    }
+
+   code_size_t get_predicate_bytecode_size(const predicate_id id) const {
+      assert(id < num_predicates());
+      return code_size[id];   
+   }
+
 	inline byte_code get_const_bytecode(void) const { return const_code; }
 	inline field_type get_const_type(const const_id& id) const { return const_types[id]; }
    

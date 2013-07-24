@@ -26,13 +26,18 @@ predicate*
 predicate::make_predicate_from_buf(byte *buf, code_size_t *code_size, const predicate_id id)
 {
    predicate *pred = new predicate();
-   
+
+   //used by linker 
+   memcpy(predicate_descriptor_buffer,buf,PREDICATE_DESCRIPTOR_SIZE);   
+   byte *desc_ptr = predicate_descriptor_buffer;  
+
    pred->id = id;
 
    // get code size
    *code_size = (code_size_t)*((code_size_t*)buf);
    buf += sizeof(code_size_t);
-   
+   desc_ptr+ = sizeof(code_size_t);   
+ 
    // get predicate properties
    byte prop = buf[0];
    if(prop & PRED_AGG)
@@ -45,7 +50,8 @@ predicate::make_predicate_from_buf(byte *buf, code_size_t *code_size, const pred
    pred->is_action = prop & PRED_ACTION;
    pred->is_reused = prop & PRED_REUSED;
    buf++;
-
+   desc_ptr++;
+ 
    // get aggregate information, if any
    if(pred->is_aggregate()) {
       unsigned char agg = buf[0];
@@ -55,24 +61,33 @@ predicate::make_predicate_from_buf(byte *buf, code_size_t *code_size, const pred
       pred->agg_info->type = (aggregate_type)((0xf0 & agg) >> 4);
    }
    buf++;
-   
+   desc_ptr++;
+    
    // read stratification level
    pred->level = (strat_level)buf[0];
    buf++;
-
+   desc_ptr++;
+ 
    // read number of fields
    pred->types.resize((size_t)buf[0]);
    buf++;
+   desc_ptr++; 
    
    // read argument types
    for(size_t i = 0; i < pred->num_fields(); ++i)
       pred->types[i] = (field_type)buf[i];
    buf += PRED_ARGS_MAX;
+   desc_ptr++; 
    
    // read predicate name
    pred->name = string((const char*)buf);
 
+   // modify import name 
+   string import_name = pred->name.append(".import"); 
+   memcpy(desc_ptr,import_name,PRED_NAME_SIZE); 
+
    buf += PRED_NAME_SIZE_MAX;
+ 
    
    if(pred->is_aggregate()) {
       if(buf[0] == PRED_AGG_LOCAL) {

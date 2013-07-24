@@ -719,14 +719,11 @@ void linkerStageOne(){
     position_prev = position;
 
     // add import predicate information/change predicate names
-    for(size_t i(0) ; i < num_predicates_new ; i++) {
+    for(size_t i(0) ; i < secondary->num_predicates() ; i++) {
 
-        // WRITE_CODE ...
-
-        /*      predicates[i] = predicate::make_predicate_from_buf((unsigned char*)buf,
-                &size, (predicate_id)i);
-                code_size[i] = size;
-         */
+        // write buffer
+        WRITE_CODE(secondary->get_predicate(i)->predicate_buffer[i],PREDICATE_DESCRIPTOR_SIZE);
+        secondary->get_predicate(i)->set_linker_id(i + primary->num_predicates());
     }
 
     // get global priority information
@@ -772,23 +769,33 @@ void linkerStageOne(){
     }
 
     // read predicate code
-    for(size_t i(0); i < num_predicates; ++i) {
-        const size_t size = code_size[i];
-        code[i] = new byte_code_el[size];
+    for(size_t i(0); i < primary->num_predicates(); ++i) {
+        const size_t size = primary->get_predicate_bytecode_size(i);
+        byte_code code = new byte_code_el[size];
 
-        READ_CODE(code[i], size);
+        READ_CODE(code, size);
     }
 
     COPY_TO_OUTPUT(position_prev,position);
     position_prev = position;
 
+    // write import predicate code    
+    for(size_t i(0); i < secondary->num_predicates(); i++){
+        const size_t size = secondary->get_predicate_bytecode_size(i);
+        
+        WRITE_CODE(secondary->get_predicate_bytecode(i),size);
+    }
+
     // read rules code
-    uint_val num_rules_code;
-    READ_CODE(&num_rules_code, sizeof(uint_val));
+    uint_val num_rules_code_orig,num_rules_code_new;
 
-    assert(num_rules_code == number_rules);
+    READ_CODE(&num_rules_code_orig, sizeof(uint_val));
 
-    for(size_t i(0); i < num_rules_code; ++i) {
+    num_rules_code_new = num_rules_code_orig + secondary->num_rules(); 
+    WRITE_CODE(&num_rules_code_new,sizeof(uint_val));     
+    position_prev = position;
+ 
+    for(size_t i(0); i < num_rules_code_orig; ++i) {
         code_size_t code_size;
         byte_code code;
 
@@ -798,14 +805,9 @@ void linkerStageOne(){
 
         READ_CODE(code, code_size);
 
-        rules[i]->set_bytecode(code_size, code);
-
         byte is_persistent(0x0);
 
         READ_CODE(&is_persistent, sizeof(byte));
-
-        if(is_persistent == 0x1)
-            rules[i]->set_as_persistent();
 
         uint_val num_preds;
 
@@ -816,13 +818,40 @@ void linkerStageOne(){
         for(size_t j(0); j < num_preds; ++j) {
             predicate_id id;
             READ_CODE(&id, sizeof(predicate_id));
-            predicate *pred(predicates[id]);
-
-            pred->affected_rules.push_back(i);
-            rules[i]->add_predicate(pred);
         }
+
+        delete code;
     }
 
+    COPY_TO_OUTPUT(position_prev,position);
+    position_prev = position;
+
+    for(size_t i(0); i < secondary->num_rules(); ++i) {
+        code_size_t code_size;
+        byte_code code;
+
+        code_size = secondary->get_rule(i)->get_codesize();
+        code = secondary->get_rule(i)->get_bytecode();        
+
+        WRITE_CODE(&code_size, sizeof(code_size_t));
+
+        WRITE_CODE(code, code_size);
+
+        byte is_persistent = secondary->get_rule(i)->as_persistent();
+
+        WRITE_CODE(&is_persistent, sizeof(byte));
+
+        uint_val num_preds = secondary->get_rule(i)->num_predicates();
+
+        WRITE_CODE(&num_preds, sizeof(uint_val));
+
+        assert(num_preds < 10);
+
+        for(size_t j(0); j < num_preds; ++j) {
+            predicate_id id = secondary->get_rule(i)->predicates[j]->get_linker_id();
+            WRITE_CODE(&id, sizeof(predicate_id));
+        }
+    }
     data_rule = NULL;
 
 }

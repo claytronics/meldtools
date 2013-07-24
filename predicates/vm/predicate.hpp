@@ -22,7 +22,11 @@ class program;
 class predicate {
 private:
    friend class program;
-   
+
+   //used for linking 
+   utils::byte predicate_descriptor_buffer[PREDICATE_DESCRIPTOR_SIZE];    
+   size_t linker_id;    
+ 
    static predicate_id current_id;
    
    predicate_id id;
@@ -93,7 +97,11 @@ public:
    inline bool is_action_pred(void) const { return is_action; }
 
    inline bool is_reused_pred(void) const { return is_reused; }
-   
+  
+   inline void  set_linker_id(size_t id) { linker_id = id ; }
+   inline char *get_desc_buffer(void) const { return predicate_descriptor_buffer; }
+   inline size_t get_linker_id(void) const { return linker_id; }
+     
    inline field_num get_aggregate_field(void) const { return agg_info->field; }
    inline aggregate_type get_aggregate_type(void) const { return agg_info->type; }
    
