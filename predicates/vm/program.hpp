@@ -94,7 +94,7 @@ public:
     
    strat_level MAX_STRAT_LEVEL;
 
-    bool print_code = false;
+    bool print_code;
    inline size_t num_rules(void) const { return number_rules; }
 	inline size_t num_args_needed(void) const { return num_args; }
 
