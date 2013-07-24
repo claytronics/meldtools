@@ -1,13 +1,3 @@
-#include "vm/program.hpp"
-#include "db/tuple.hpp"
-#include "interface.hpp"
-#include "vm/instr.hpp"
-#include "db/database.hpp"
-#include "utils/types.hpp"
-#include "vm/state.hpp"
-#include "version.hpp"
-#include "vm/defs.hpp"
-#include "vm/types.hpp"
 
 //static const size_t PREDICATE_DESCRIPTOR_SIZE = 104;
                                                        /* sizeof(code_size_t) +

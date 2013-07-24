@@ -18,7 +18,8 @@ class rule
    private:
 
       rule_id id;
-      const std::string str;
+      //linker  
+      std::string str;
       byte_code code;
 		code_size_t code_size;
 		typedef std::vector<predicate*> predicate_vector;
