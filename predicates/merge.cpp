@@ -48,6 +48,10 @@ using namespace std;
 
 static char *bytefile1;
 static char *bytefile2;
+static char *m_file;
+static char *md_file;
+static char *ml_file;
+
 static bool print = false;
 static program* primary;
 static program* secondary;
@@ -69,7 +73,19 @@ static void read_args(int argc, char **argv)
     while (argc > 0 && (argv[0][0] == '-')) {
         switch(argv[0][1]) {
             case 'f' :{
-                          bytefile1 = argv[1];
+                          switch(argv[0][2]){                      
+                                     case 'm' : bytefile1 = argv[1];
+                                                m_file = argv[1];
+                                                break;
+
+                                     case 'd' : md_file = argv[1];
+                                                break;
+
+                                     case 'l' : ml_file = argv[1];
+                                                break;    
+    
+                                     default : break;
+                          }     
                           argc--;                            
                           argv++;
                       }            
@@ -441,20 +457,93 @@ int linkExternalFunctions() {
 // table lookup
 char* get_filename(char *func_name,struct func_table* table,int size){
 
-#if 0
     int i;
     for(i = 0; i < size;i++){
 
         if(!strcmp(func_name,table[i].func_name))
             return table[i].file_name;
     }
-#endif
     return NULL;
 
 }
 
 void linkerStageOne(){
 
+    // .m file
+    std::ifstream infile_m(m_file,std::ifstream::binary);
+
+    // .md file
+    std::ifstream infile_md;
+    infile_md.open(md_file);
+
+    // .ml file
+    std::ofstream outfile_ml(ml_file,std::ofstream::binary);
+
+    infile_m.seekg(0,infile_m.end);
+    long size_tot = infile_m.tellg();
+    infile_m.seekg(0);
+
+    cout <<"total file size : "<<size_tot<<" bytes"<<endl;
+
+    position = 0;
+    position_wr = 0;
+    position_prev = 0; 
+    cout << "program : init"<<endl; 
+
+    if(!infile_md.is_open()){
+        cout<<"Error : cannot open *.md file\n";
+        return 0;
+    }
+
+    // read num of lines in .md file , equal to num of functions defined
+    num_of_lines = count(istreambuf_iterator<char>(infile_md),
+            istreambuf_iterator<char>(),'\n');
+
+    cout << "num of external functions : "<<num_of_lines<<endl;
+
+    // create table of func_names and file_names
+    struct func_table table[num_of_lines];
+
+    // reset file pointer
+    infile_md.seekg(0);
+    int n = 0;
+
+    while(n < num_of_lines){
+        char buf[MAX_CHARS_PER_LINE];
+        infile_md.getline(buf,MAX_CHARS_PER_LINE);
+
+
+        const char* token[MAX_TOKENS_PER_LINE] = {};
+
+        token[0] = strtok(buf,DELIMITER);
+
+        if(token[0]){
+
+            //copy func name        
+            memcpy(table[n].func_name,token[0],strlen(token[0])+1);   
+
+            //ignore argument
+            token[1] = strtok(0,DELIMITER);
+
+            // copy file path
+            token[2] = strtok(0,DELIMITER);
+            memcpy(table[n].file_name,token[2],strlen(token[2])+1);   
+
+            cout << "func_name : "<<table[n].func_name<<endl;
+            cout << "func_arg : "<<token[1]<<endl;
+            cout << "file_name : "<<table[n].file_name<<endl;
+        }
+        n++;    
+
+    }
+
+
+
+    if(!infile_m.is_open()){
+        cout<<"Error : cannot open *.m file\n"; 
+        return 0;
+    }
+  
     // read magic
     uint32_t magic1, magic2;
     READ_CODE(&magic1, sizeof(magic1));
@@ -660,6 +749,7 @@ void linkerStageOne(){
             READ_CODE(&n_externs, sizeof(uint_val));
 
             for(size_t i(0); i < n_externs; ++i) {
+
                 uint_val extern_id;
 
                 READ_CODE(&extern_id, sizeof(uint_val));
@@ -667,43 +757,51 @@ void linkerStageOne(){
 
                 READ_CODE(extern_name, sizeof(extern_name));
 
+                COPY_TO_OUTPUT(position_prev,position);
+
                 char skip_filename[1024];
+                char *file_name = get_filename(extern_name,table,num_of_lines);
 
                 READ_CODE(skip_filename, sizeof(skip_filename));
+
+                cout<<"skip_filename : "<<skip_filename<<endl;
+
+                if(file_name){
+                    cout<<"external function : "<<extern_name<<" found !\n";
+                    cout << "filename : "<<file_name<<endl;
+                    memcpy(skip_filename,table[1].file_name,strlen(file_name));
+                } 
+                else{
+                    cout<<"external function : "<<extern_name<<" not defined in .md file\n";
+                    memcpy(skip_filename,dummy_path,sizeof(dummy_path));
+                }
+
+                WRITE_CODE(skip_filename,sizeof(skip_filename));
 
                 ptr_val skip_ptr;
 
                 READ_CODE(&skip_ptr, sizeof(skip_ptr));
-
-                //dlopen call
-                //dlsym call
-                skip_ptr = get_function_pointer(skip_filename,extern_name);
+                WRITE_CODE(&skip_ptr,sizeof(skip_ptr));
 
                 uint_val num_args;
 
                 READ_CODE(&num_args, sizeof(num_args));
+                WRITE_CODE(&num_args,sizeof(num_args));
 
-                byte b;
-                READ_CODE(&b,sizeof(byte)); 
-                field_type ret_type = (field_type)b;
+                cout << "Id : " << extern_id << " Name :" << extern_name << endl;
+                cout<<"Num args : "<<num_args<<endl;
 
-                cout << "Id " << extern_id << " " << extern_name << " ";
-                cout <<"Num_args "<<num_args<<endl;
+                for(uint_val j(0); j != num_args + 1; ++j) {
+                    byte b;
+                    READ_CODE(&b, sizeof(byte));
+                    WRITE_CODE(&b,sizeof(byte));
 
-                field_type arg_type[num_args];
-                if(num_args){
-
-                    for(uint_val j(0); j != num_args; ++j) {
-                        byte b;
-                        READ_CODE(&b, sizeof(byte));
-                        arg_type[j] = (field_type)b;
-                        cout << field_type_string(arg_type[j]) << " ";
-                    }
-
-                    add_external_function((external_function_ptr)skip_ptr,num_args,ret_type,arg_type);             
-                }else
-                    add_external_function((external_function_ptr)skip_ptr,0,ret_type,NULL);
+                    field_type type = (field_type)b;
+                    cout << field_type_string(type) << ", ";
+                }
                 cout << endl;
+
+                position_prev = position;
             }
         }
     }
