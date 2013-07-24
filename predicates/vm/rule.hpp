@@ -48,6 +48,7 @@ class rule
 		typedef predicate_vector::const_iterator predicate_iterator;
 		inline predicate_iterator begin_predicates(void) const { return predicates.begin(); }
 		inline predicate_iterator end_predicates(void) const { return predicates.end(); }
+        inline predicate *get_predicate_number(size_t i) { return predicates[i]; }
 
       explicit rule(const rule_id _id, const std::string& _str):
          id(_id), str(_str), is_persistent(false) { }

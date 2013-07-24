@@ -62,7 +62,27 @@ enum field_type {
     FIELD_STRING = 0x9
 };
 */
+code_size_t const_code_size;
+char*
+field_type_string_(field_type type)
+{
+   switch(type) {
+      case FIELD_INT: return "int";
+      case FIELD_FLOAT: return "float";
+      case FIELD_NODE: return "node";
+      case FIELD_LIST_INT: return "int list";
+      case FIELD_LIST_FLOAT: return "float list";
+        case FIELD_LIST_NODE: return "node list";
+      case FIELD_WORKER: return "worker";
+        case FIELD_STRING: return "string";
+      default:
+           return "Unrecognized field type"; 
+//         throw type_error("Unrecognized field type " + to_string(type) +"(field_type_string)");
+    }
 
+   assert(false);
+   return "";
+}
 
 
 

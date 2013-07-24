@@ -12,7 +12,7 @@
 #include<string.h>
 #include<algorithm>
 
-//#include "linker.hpp"
+#include "linker.hpp"
 
 #define READ_CODE(TO, SIZE) do { \
     infile_m.read((char *)(TO), SIZE);	\
@@ -39,8 +39,6 @@
 
 #define VERSION_AT_LEAST(MAJ, MIN) (major_version > (MAJ) || (major_version == (MAJ) && minor_version >= (MIN)))
 
-#include "vm/program.hpp"
-#include "interface.hpp"
 
 using namespace vm;
 using namespace process;
@@ -55,6 +53,30 @@ static char *ml_file;
 static bool print = false;
 static program* primary;
 static program* secondary;
+
+code_size_t const_code_size;
+
+char*
+field_type_string_(field_type type)
+{
+   switch(type) {
+      case FIELD_INT: return "int";
+      case FIELD_FLOAT: return "float";
+      case FIELD_NODE: return "node";
+      case FIELD_LIST_INT: return "int list";
+      case FIELD_LIST_FLOAT: return "float list";
+        case FIELD_LIST_NODE: return "node list";
+      case FIELD_WORKER: return "worker";
+        case FIELD_STRING: return "string";
+      default:
+           return "Unrecognized field type"; 
+//         throw type_error("Unrecognized field type " + to_string(type)
+//         +"(field_type_string)");
+    }
+
+   assert(false);
+   return "";
+}
 
 static void help()
 {
@@ -797,7 +819,7 @@ void linkerStageOne(){
                     WRITE_CODE(&b,sizeof(byte));
 
                     field_type type = (field_type)b;
-                    cout << field_type_string(type) << ", ";
+                    cout << field_type_string_(type) << ", ";
                 }
                 cout << endl;
 
@@ -946,11 +968,10 @@ void linkerStageOne(){
         assert(num_preds < 10);
 
         for(size_t j(0); j < num_preds; ++j) {
-            predicate_id id = secondary->get_rule(i)->predicates[j]->get_linker_id();
+            predicate_id id = secondary->get_rule(i)->get_predicate_number[j]->get_linker_id();
             WRITE_CODE(&id, sizeof(predicate_id));
         }
     }
-    data_rule = NULL;
 
 }
 

@@ -28,15 +28,15 @@ predicate::make_predicate_from_buf(byte *buf, code_size_t *code_size, const pred
    predicate *pred = new predicate();
 
    //used by linker 
-   memcpy(predicate_descriptor_buffer,buf,PREDICATE_DESCRIPTOR_SIZE);   
-   byte *desc_ptr = predicate_descriptor_buffer;  
+   memcpy(pred->predicate_descriptor_buffer,buf,104);   
+   byte *desc_ptr = pred->get_desc_buffer();  
 
    pred->id = id;
 
    // get code size
    *code_size = (code_size_t)*((code_size_t*)buf);
    buf += sizeof(code_size_t);
-   desc_ptr+ = sizeof(code_size_t);   
+   desc_ptr += sizeof(code_size_t);   
  
    // get predicate properties
    byte prop = buf[0];
@@ -84,7 +84,7 @@ predicate::make_predicate_from_buf(byte *buf, code_size_t *code_size, const pred
 
    // modify import name 
    string import_name = pred->name.append(".import"); 
-   memcpy(desc_ptr,import_name,PRED_NAME_SIZE); 
+   memcpy(desc_ptr,import_name.c_str(),PRED_NAME_SIZE_MAX); 
 
    buf += PRED_NAME_SIZE_MAX;
  
