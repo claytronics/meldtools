@@ -83,7 +83,8 @@ predicate::make_predicate_from_buf(byte *buf, code_size_t *code_size, const pred
    pred->name = string((const char*)buf);
 
    // modify import name 
-   string import_name = pred->name.append(".import"); 
+   string import_name = pred->name;
+   import_name.append(".import"); 
    memcpy(desc_ptr,import_name.c_str(),PRED_NAME_SIZE_MAX); 
 
    buf += PRED_NAME_SIZE_MAX;

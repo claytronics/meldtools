@@ -45,7 +45,7 @@
 } while(false)
 
 #define VERSION_AT_LEAST(MAJ, MIN) (maj > (MAJ) || (maj == (MAJ) && min >= (MIN)))
-
+#define PRED_DESC_SZ 104
 
 using namespace vm;
 using namespace process;
@@ -67,32 +67,30 @@ static program* secondary;
 
 code_size_t const_code_size;
 
-char*
+    char*
 field_type_string_(field_type type)
 {
-   switch(type) {
-      case FIELD_INT: return "int";
-      case FIELD_FLOAT: return "float";
-      case FIELD_NODE: return "node";
-      case FIELD_LIST_INT: return "int list";
-      case FIELD_LIST_FLOAT: return "float list";
+    switch(type) {
+        case FIELD_INT: return "int";
+        case FIELD_FLOAT: return "float";
+        case FIELD_NODE: return "node";
+        case FIELD_LIST_INT: return "int list";
+        case FIELD_LIST_FLOAT: return "float list";
         case FIELD_LIST_NODE: return "node list";
         case FIELD_STRING: return "string";
-      default:
-           return "Unrecognized field type"; 
-//         throw type_error("Unrecognized field type " + to_string(type)
-//         +"(field_type_string)");
+        default:
+                           return "Unrecognized field type"; 
     }
 
-   assert(false);
-   return "";
+    assert(false);
+    return "";
 }
 
 static void help()
 {
 
     cerr << "merge: execute linker program" << endl;
-    cerr << "./merge <program file> [optional -c]" << endl;
+    cerr << "./merge -fm <.m input file> -fd <.md input file> -fl <.ml output file>" << endl;
     exit(EXIT_SUCCESS);
 }
 
@@ -106,17 +104,17 @@ static void read_args(int argc, char **argv)
         switch(argv[0][1]) {
             case 'f' :{
                           switch(argv[0][2]){                      
-                                     case 'm' : bytefile1 = argv[1];
-                                                m_file = argv[1];
-                                                break;
+                              case 'm' : bytefile1 = argv[1];
+                                         m_file = argv[1];
+                                         break;
 
-                                     case 'd' : md_file = argv[1];
-                                                break;
+                              case 'd' : md_file = argv[1];
+                                         break;
 
-                                     case 'l' : ml_file = argv[1];
-                                                break;    
-    
-                                     default : break;
+                              case 'l' : ml_file = argv[1];
+                                         break;    
+
+                              default : break;
                           }     
                           argc--;                            
                           argv++;
@@ -229,7 +227,7 @@ void linkerStageOne(){
     if(!infile_m.is_open()){
         cout<<"Error : cannot open *.m file\n"; 
     }
-  
+
     // read magic
     uint32_t magic1, magic2;
     READ_CODE(&magic1, sizeof(magic1));
@@ -245,7 +243,7 @@ void linkerStageOne(){
 
 
     // read number of predicates
-    utils::byte buf[104];
+    utils::byte buf[PRED_DESC_SZ];
 
     READ_CODE(buf, sizeof(byte));
 
@@ -320,7 +318,7 @@ void linkerStageOne(){
     utils::byte n_args;
 
     READ_CODE(&n_args, sizeof(byte));
-   // num_args = (size_t)n_args;
+    // num_args = (size_t)n_args;
 
     // copy from position_prev to position
     COPY_TO_OUTPUT(position_prev,position);
@@ -406,7 +404,7 @@ void linkerStageOne(){
     byte_code const_code = new byte_code_el[const_code_size];
 
     READ_CODE(const_code, const_code_size);
-
+    delete const_code;
 
     if(VERSION_AT_LEAST(0, 6)) {
         // get function code
@@ -420,7 +418,7 @@ void linkerStageOne(){
             READ_CODE(&fun_size, sizeof(code_size_t));
             byte_code fun_code(new byte_code_el[fun_size]);
             READ_CODE(fun_code, fun_size);
-
+            delete fun_code;
         }
 
         //init functions defined in external namespace
@@ -493,7 +491,7 @@ void linkerStageOne(){
     // read source predicate information
     for(size_t i(0); i < num_predicates_orig; ++i) {
 
-        READ_CODE(buf, 104);
+        READ_CODE(buf, PRED_DESC_SZ);
 
     }
 
@@ -504,7 +502,7 @@ void linkerStageOne(){
     for(size_t i(0) ; i < secondary->num_predicates() ; i++) {
 
         // write buffer
-        WRITE_CODE(secondary->get_predicate(i)->get_desc_buffer(),104);
+        WRITE_CODE(secondary->get_predicate(i)->get_desc_buffer(),PRED_DESC_SZ);
         secondary->get_predicate(i)->set_linker_id(i + primary->num_predicates());
     }
 
@@ -556,6 +554,7 @@ void linkerStageOne(){
         byte_code code = new byte_code_el[size];
 
         READ_CODE(code, size);
+        delete code;
     }
 
     COPY_TO_OUTPUT(position_prev,position);
@@ -564,7 +563,7 @@ void linkerStageOne(){
     // write import predicate code    
     for(size_t i(0); i < secondary->num_predicates(); i++){
         const size_t size = secondary->get_predicate_bytecode_size(i);
-        
+
         WRITE_CODE(secondary->get_predicate_bytecode(i),size);
     }
 
@@ -576,7 +575,7 @@ void linkerStageOne(){
     num_rules_code_new = num_rules_code_orig + secondary->num_rules(); 
     WRITE_CODE(&num_rules_code_new,sizeof(uint_val));     
     position_prev = position;
- 
+
     for(size_t i(0); i < num_rules_code_orig; ++i) {
         code_size_t code_size;
         byte_code code;
@@ -635,16 +634,25 @@ void linkerStageOne(){
         }
     }
 
+    delete[] buffer;
+    infile_m.close();
+    infile_md.close();
+    outfile_ml.close();
+
 }
 
-    int
+int
 main(int argc, char **argv)
 {
-    if(argc <= 2) {
+    if(argc < 7) {
         help();  
     }
 
     read_args(argc,argv);
+
+    cout << ".m file : " << m_file << endl;
+    cout << ".md file : " << md_file << endl;
+    cout << ".ml file : " << ml_file << endl;
 
     const string file(bytefile1);
     int i;    
