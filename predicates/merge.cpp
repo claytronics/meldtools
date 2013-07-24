@@ -56,7 +56,6 @@ using namespace process;
 using namespace utils;
 
 static char *bytefile1;
-static char *bytefile2;
 static char *m_file;
 static char *md_file;
 static char *ml_file;
@@ -67,7 +66,7 @@ static program* secondary;
 
 code_size_t const_code_size;
 
-    char*
+std::string
 field_type_string_(field_type type)
 {
     switch(type) {
@@ -661,7 +660,7 @@ main(int argc, char **argv)
     // read import file names
     cout << "Import Files...\n";
 
-    for(i = 0; i < primary->num_imported_predicates(); i++){
+    for(uint32_t i(0); i < primary->num_imported_predicates(); i++){
 
         cout << primary->get_imported_predicate(i)->get_file() << endl; 
         secondary = new program(primary->get_imported_predicate(i)->get_file());

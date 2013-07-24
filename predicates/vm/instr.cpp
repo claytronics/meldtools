@@ -579,7 +579,7 @@ instrs_print(byte_code code, const code_size_t len, const int tabcount, const pr
 
 void dependency_print(){
 
-    uint32_t i,j;
+    uint32_t j;
 
     std::sort(dependency.begin(),dependency.end());
     dependency.erase(std::unique(dependency.begin(),dependency.end()),dependency.end());
