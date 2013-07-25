@@ -267,9 +267,9 @@ void linkerStageOne(){
     SEEK_CODE(num_nodes * database::node_size);
 
 
+    uint32_t number_imported_predicates;
     // read imported/exported predicates
     if(VERSION_AT_LEAST(0, 9)) {
-        uint32_t number_imported_predicates;
 
         READ_CODE(&number_imported_predicates,
                 sizeof(number_imported_predicates));
@@ -314,10 +314,9 @@ void linkerStageOne(){
     }
 
     // get number of args needed
-    utils::byte n_args;
+    byte n_args;
 
     READ_CODE(&n_args, sizeof(byte));
-    // num_args = (size_t)n_args;
 
     // copy from position_prev to position
     COPY_TO_OUTPUT(position_prev,position);
@@ -335,7 +334,7 @@ void linkerStageOne(){
     WRITE_CODE(&n_rules_new, sizeof(uint_val));   
 
     cout << "No of source rules : " << n_rules_orig << endl;
-    cout << "No of import rules : " << n_rules_new << endl;    
+    cout << "No of import rules : " << secondary->num_rules() << endl;    
 
     position_prev = position;
 
@@ -364,6 +363,7 @@ void linkerStageOne(){
         uint_val rule_len;
 
         rule_len = strlen(secondary->get_rule(i)->get_string().c_str());
+        WRITE_CODE(&rule_len, sizeof(uint_val));
 
         assert(rule_len > 0);
         // get string and append  
@@ -657,6 +657,10 @@ main(int argc, char **argv)
     int i;    
 
     primary = new program(file);
+    primary->print_code = true;
+
+    primary->print_predicate_dependency();
+
     // read import file names
     cout << "Import Files...\n";
 

@@ -3,4 +3,4 @@
 (cl-meld:meld-compile "/home/rupesh/blinkybot/tools_meld/meldtools/test/fstream/test.meld" "/home/rupesh/blinkybot/tools_meld/meldtools/test/fstream/test_new")
 (cl-meld:meld-compile "/home/rupesh/blinkybot/tools_meld/meldtools/test/fstream/file3.meld" "/home/rupesh/blinkybot/tools_meld/meldtools/test/fstream/file3")
 (cl-meld:meld-compile "/home/rupesh/blinkybot/tools_meld/meldtools/test/fstream/file2.meld" "/home/rupesh/blinkybot/tools_meld/meldtools/test/fstream/file2")
-(cl-meld:meld-compile "/home/rupesh/blinkybot/tools_meld/meldtools/test/fstream/file1.meld" "/home/rupesh/blinkybot/tools_meld/meldtools/test/fstream/file1")
+(cl-meld:meld-compile "/home/rupesh/blinkybot/bbsim/meld-programs/rainbow.meld" "/home/rupesh/blinkybot/bbsim/meld-programs/rainbow_newC")

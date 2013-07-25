@@ -50,7 +50,7 @@ program::program(const string& _filename):
    init(NULL)
 {
 	size_t position(0);
-   
+  
    ifstream fp(filename.c_str(), ios::in | ios::binary);
    
    if(!fp.is_open())
@@ -77,8 +77,8 @@ program::program(const string& _filename):
    
 	READ_CODE(buf, sizeof(byte));
    
-   const size_t num_predicates = (size_t)buf[0];
-   
+   const size_t num_predicates = (size_t)buf[0]; 
+
    predicates.resize(num_predicates);
    code_size.resize(num_predicates);
    code.resize(num_predicates);

@@ -56,15 +56,17 @@ static void read_args(int argc, char **argv)
 int
 main(int argc, char **argv)
 {
-    if(argc <= 2) {
+    if(argc < 2) {
         help();  
     }
 
+    cout << "reading arguments......" << endl;
     read_args(argc,argv);
 
     const string file(bytefile);
     int i;    
 
+    cout << "generating program object......" << endl;
     program prog(file);
 
     if(print)
