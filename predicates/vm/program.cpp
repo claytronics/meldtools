@@ -78,7 +78,8 @@ program::program(const string& _filename):
 	READ_CODE(buf, sizeof(byte));
    
    const size_t num_predicates = (size_t)buf[0]; 
-
+   cout << "num_predicates : " << num_predicates << endl; 
+    
    predicates.resize(num_predicates);
    code_size.resize(num_predicates);
    code.resize(num_predicates);
@@ -139,6 +140,7 @@ program::program(const string& _filename):
 
 	READ_CODE(&n_args, sizeof(byte));
 	num_args = (size_t)n_args;
+    cout << "num_args : " << num_args << endl; 
 
    // get rule information
    uint_val n_rules;
@@ -146,6 +148,7 @@ program::program(const string& _filename):
    READ_CODE(&n_rules, sizeof(uint_val));
 
    number_rules = n_rules;
+   cout << "n_rules : " << n_rules << endl; 
 
    for(size_t i(0); i < n_rules; ++i) {
       // read rule string length
@@ -160,6 +163,7 @@ program::program(const string& _filename):
       READ_CODE(str, sizeof(char) * rule_len);
 
       str[rule_len] = '\0';
+      cout << "rule " << i << " : " <<  str << endl; 
 
       rules.push_back(new rule((rule_id)i, string(str)));
    }
@@ -167,6 +171,7 @@ program::program(const string& _filename):
 	// read string constants
 	int_val num_strings;
 	READ_CODE(&num_strings, sizeof(int_val));
+    cout << "num_strings : " << num_strings << endl; 
 	
 	default_strings.reserve(num_strings);
 	
@@ -178,12 +183,15 @@ program::program(const string& _filename):
 		char str[length + 1];
 		READ_CODE(str, sizeof(char) * length);
 		str[length] = '\0';
+        cout << "const string " << i << " : " <<  str << endl; 
+
 		default_strings.push_back(runtime::rstring::make_default_string(str));
 	}
 	
 	// read constants code
 	uint_val num_constants;
 	READ_CODE(&num_constants, sizeof(uint_val));
+    cout << "num_constants : " << num_constants << endl; 
 	
 	// read constant types
 	const_types.resize(num_constants);
@@ -192,11 +200,13 @@ program::program(const string& _filename):
 		byte b;
 		READ_CODE(&b, sizeof(byte));
 		const_types[i] = (field_type)b;
+        cout << "const type " << i << " : " << b << endl; 
 	}
 	
 	// read constants code
 	READ_CODE(&const_code_size, sizeof(code_size_t));
-	
+    cout << "const_code_size : " << const_code_size << endl; 
+    
 	const_code = new byte_code_el[const_code_size];
 	
 	READ_CODE(const_code, const_code_size);
@@ -284,10 +294,10 @@ program::program(const string& _filename):
       code_size_t size;
 
 		READ_CODE(buf, PREDICATE_DESCRIPTOR_SIZE);
-      
       predicates[i] = predicate::make_predicate_from_buf((unsigned char*)buf, &size, (predicate_id)i);
       code_size[i] = size;
 
+      cout << "predicate " << i << " : " << predicates[i]->get_name() << endl;  
       MAX_STRAT_LEVEL = max(predicates[i]->get_strat_level() + 1, MAX_STRAT_LEVEL);
 		
       if(predicates[i]->is_route_pred())

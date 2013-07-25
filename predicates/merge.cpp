@@ -172,7 +172,7 @@ void linkerStageOne(){
     position = 0;
     position_wr = 0;
     position_prev = 0; 
-    cout << "program : init"<<endl; 
+    cout << "merging .m files......"<<endl; 
 
     if(!infile_md.is_open()){
         cout<<"Error : cannot open *.md file\n";
@@ -220,8 +220,6 @@ void linkerStageOne(){
         n++;    
 
     }
-
-
 
     if(!infile_m.is_open()){
         cout<<"Error : cannot open *.m file\n"; 
@@ -657,13 +655,9 @@ main(int argc, char **argv)
     int i;    
 
     primary = new program(file);
-    primary->print_code = true;
-
-    primary->print_predicate_dependency();
 
     // read import file names
     cout << "Import Files...\n";
-
     for(uint32_t i(0); i < primary->num_imported_predicates(); i++){
 
         cout << primary->get_imported_predicate(i)->get_file() << endl; 

@@ -77,7 +77,7 @@ predicate::make_predicate_from_buf(byte *buf, code_size_t *code_size, const pred
    for(size_t i = 0; i < pred->num_fields(); ++i)
       pred->types[i] = (field_type)buf[i];
    buf += PRED_ARGS_MAX;
-   desc_ptr++; 
+   desc_ptr += PRED_ARGS_MAX ; 
    
    // read predicate name
    pred->name = string((const char*)buf);
@@ -88,26 +88,36 @@ predicate::make_predicate_from_buf(byte *buf, code_size_t *code_size, const pred
    memcpy(desc_ptr,import_name.c_str(),PRED_NAME_SIZE_MAX); 
 
    buf += PRED_NAME_SIZE_MAX;
- 
+   desc_ptr += PRED_NAME_SIZE_MAX;  
    
    if(pred->is_aggregate()) {
       if(buf[0] == PRED_AGG_LOCAL) {
          buf++;
+         desc_ptr++;
+    
          pred->agg_info->safeness = AGG_LOCALLY_GENERATED;
          pred->agg_info->local_level = (strat_level)(buf[0]);
       } else if(buf[0] == PRED_AGG_REMOTE) {
          buf++;
+         desc_ptr++;
+
          pred->agg_info->safeness = AGG_NEIGHBORHOOD;
          pred->agg_info->remote_pred_id = (predicate_id)(buf[0]);
       } else if(buf[0] == PRED_AGG_REMOTE_AND_SELF) {
          buf++;
+         desc_ptr++;
+
          pred->agg_info->safeness = AGG_NEIGHBORHOOD_AND_SELF;
          pred->agg_info->remote_pred_id = (predicate_id)(buf[0]);
       } else if(buf[0] == PRED_AGG_IMMEDIATE) {
          buf++;
+         desc_ptr++;
+
          pred->agg_info->safeness = AGG_IMMEDIATE;
       } else if(buf[0] & PRED_AGG_UNSAFE) {
          buf++;
+         desc_ptr++;
+
          pred->agg_info->safeness = AGG_UNSAFE;
       }
    }
