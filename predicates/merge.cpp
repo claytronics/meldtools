@@ -64,6 +64,7 @@ static bool print = false;
 static program* primary;
 static program* secondary;
 
+std::ostream cout_null(0);
 code_size_t const_code_size;
 
 std::string
@@ -150,6 +151,36 @@ char* get_filename(char *func_name,struct func_table* table,int size){
     return NULL;
 
 }
+
+//relinking predicate dependencies
+void 
+modify_code(){
+
+    secondary->enable_modify();
+
+    cout << "Modifying code for....\n";
+
+    // modify rule code
+    for(size_t i(0); i < secondary->num_rules();i++){
+
+        cout<<"rule : "<<i<<endl;
+        cout<<secondary->get_rule(i)->get_string()<<endl;
+
+        secondary->get_rule(i)->print(cout_null,secondar b vc);
+    }
+
+    //modify predicate code
+    for(i = 0 ; i < secondary->num_predicates(); i++){
+
+        cout<<"predicate : "<<i<<endl;
+        cout<<secondary->get_predicate(i)->name<<endl;
+
+        secondary->print_predicate_code(cout_null,get_predicate(i));
+    }
+
+    secondary->disable_modify();
+}
+
 
 void linkerStageOne(){
 
