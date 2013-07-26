@@ -30,6 +30,8 @@ predicate::make_predicate_from_buf(byte *buf, code_size_t *code_size, const pred
    //used by linker 
    memcpy(pred->predicate_descriptor_buffer,buf,104);   
    byte *desc_ptr = pred->get_desc_buffer();  
+   // default value 
+//   pred->set_imported(false); 
 
    pred->id = id;
 

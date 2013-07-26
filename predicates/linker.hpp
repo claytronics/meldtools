@@ -7,7 +7,7 @@
                                                        PRED_AGG_INFO_MAX;*/
 
 
-
+const int COMMON_PREDICATES = 8;
 const int MAX_CHARS_PER_LINE = 512;
 const int MAX_TOKENS_PER_LINE = 3;
 const char* const DELIMITER = " ";

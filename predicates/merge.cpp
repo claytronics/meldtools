@@ -248,11 +248,12 @@ void linkerStageOne(){
 
     // add predicates from import file
     const size_t num_predicates_new = num_predicates_orig + secondary->num_predicates();
-    buf[0] = (byte) num_predicates_new;   
+    buf[0] = (byte)(num_predicates_new - COMMON_PREDICATES);   
     WRITE_CODE(buf,sizeof(byte));   
 
     cout << "No of source predicates : " << num_predicates_orig << endl;
-    cout << "No of import predicates : " << secondary->num_predicates() << endl;    
+    cout << "No of import predicates : " << (secondary->num_predicates() -
+COMMON_PREDICATES) << endl;    
 
     // reset last byte read pointer 
     position_prev = position;
@@ -495,12 +496,14 @@ void linkerStageOne(){
     COPY_TO_OUTPUT(position_prev,position); 
     position_prev = position;
 
+    size_t offset = primary->num_predicates();
     // add import predicate information/change predicate names
-    for(size_t i(0) ; i < secondary->num_predicates() ; i++) {
+    for(size_t i(COMMON_PREDICATES) ; i < secondary->num_predicates() ; i++) {
 
         // write buffer
         WRITE_CODE(secondary->get_predicate(i)->get_desc_buffer(),PRED_DESC_SZ);
-        secondary->get_predicate(i)->set_linker_id(i + primary->num_predicates());
+        secondary->get_predicate(i)->set_linker_id(offset);
+        offset++;
     }
 
     // get global priority information
@@ -558,7 +561,7 @@ void linkerStageOne(){
     position_prev = position;
 
     // write import predicate code    
-    for(size_t i(0); i < secondary->num_predicates(); i++){
+    for(size_t i(COMMON_PREDICATES); i < secondary->num_predicates(); i++){
         const size_t size = secondary->get_predicate_bytecode_size(i);
 
         WRITE_CODE(secondary->get_predicate_bytecode(i),size);
