@@ -156,7 +156,7 @@ char* get_filename(char *func_name,struct func_table* table,int size){
 void 
 modify_code(){
 
-    secondary->enable_modify();
+    secondary->set_modify(true);
 
     cout << "Modifying code for....\n";
 
@@ -166,19 +166,20 @@ modify_code(){
         cout<<"rule : "<<i<<endl;
         cout<<secondary->get_rule(i)->get_string()<<endl;
 
-        secondary->get_rule(i)->print(cout_null,secondar b vc);
+        secondary->get_rule(i)->print(cout_null,secondary);
     }
 
     //modify predicate code
-    for(i = 0 ; i < secondary->num_predicates(); i++){
+    for(size_t i(0) ; i < secondary->num_predicates(); i++){
 
         cout<<"predicate : "<<i<<endl;
-        cout<<secondary->get_predicate(i)->name<<endl;
+        cout<<secondary->get_predicate(i)->get_name()<<endl;
 
-        secondary->print_predicate_code(cout_null,get_predicate(i));
+        secondary->print_predicate_code(cout_null,secondary->get_predicate(i));
     }
 
-    secondary->disable_modify();
+    secondary->set_modify(false);
+
 }
 
 
@@ -536,6 +537,9 @@ COMMON_PREDICATES) << endl;
         secondary->get_predicate(i)->set_linker_id(offset);
         offset++;
     }
+
+    // modify rule and predicate code    
+    modify_code();
 
     // get global priority information
     byte global_info;

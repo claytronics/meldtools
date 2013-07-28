@@ -53,6 +53,7 @@ private:
 
    std::vector<import*> imported_predicates;
    std::vector<std::string> exported_predicates;
+   bool modify_bytecode; 
 
 	size_t num_args;
    size_t number_rules;
@@ -88,10 +89,10 @@ private:
    vm::priority_type priority_order;
    heap_priority initial_priority;
 
-   void print_predicate_code(std::ostream&, predicate*) const;
    
 public:
     
+   void print_predicate_code(std::ostream&, predicate*) const;
    strat_level MAX_STRAT_LEVEL;
     bool print_code;
    inline size_t num_rules(void) const { return number_rules; }
@@ -142,6 +143,10 @@ public:
    predicate* get_predicate(const predicate_id&) const;
    predicate* get_route_predicate(const size_t&) const;
    
+   // linker change  
+   void set_modify(bool val);// { modify_bytecode = val; }
+   bool allow_modify(void) const;// { return modify_bytecode; }    
+
    byte_code get_predicate_bytecode(const predicate_id id) const {
       assert(id < num_predicates());
       return code[id];
@@ -159,7 +164,7 @@ public:
    size_t num_route_predicates(void) const { return route_predicates.size(); }
    size_t num_imported_predicates(void) const { return imported_predicates.size(); } 
    size_t num_exported_predicates(void) const { return exported_predicates.size(); } 
-
+   
 	inline runtime::rstring::ptr get_default_string(const size_t i) const
 	{
       assert(i < default_strings.size());

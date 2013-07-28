@@ -215,6 +215,8 @@ inline code_offset_t jump_get(pcounter x, size_t off) { return pcounter_code_siz
 inline reg_num reg_get(pcounter x, size_t off) { return (reg_num)(*(x + off) & 0x1f); }
 inline instr_val val_get(pcounter x, size_t off) { return (instr_val)(*(x + off) & 0x3f); }
 inline predicate_id predicate_get(pcounter x, size_t off) { return (predicate_id)(*(x + off) & 0x7f); }
+//linker change ,allows modifying rule and predicate byte code
+inline void predicate_set(pcounter x, size_t off, predicate_id id) { *(x + off) = (unsigned char)id; }   
 inline utils::byte byte_get(pcounter x, size_t off) { return *(utils::byte*)(x + off); }
 inline field_num field_num_get(pcounter x, size_t off) { return (field_num)*(x + off); }
 

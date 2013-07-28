@@ -56,6 +56,9 @@ program::program(const string& _filename):
    if(!fp.is_open())
       throw load_file_error(filename, "unable to open file");
 
+   // linker change 
+   set_modify(false);
+ 
    // read magic
    uint32_t magic1, magic2;
    READ_CODE(&magic1, sizeof(magic1));
@@ -434,6 +437,21 @@ program::~program(void)
    }
    MAX_STRAT_LEVEL = 0;
 }
+
+// linker change  
+void
+program::set_modify(bool val) {
+
+ modify_bytecode = val;
+
+}
+
+bool 
+program::allow_modify(void) const { 
+
+return modify_bytecode;
+
+} 
 
 void 
 program::add_external_function(external_function_ptr ptr,size_t num_args,field_type

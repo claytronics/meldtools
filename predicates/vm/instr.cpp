@@ -233,7 +233,13 @@ instr_print(pcounter pc, const bool recurse, const int tabcount, const program *
    		}
    		break;
    	case ALLOC_INSTR:
-         dependency.push_back(prog->get_predicate(alloc_predicate(pc))->get_name()); 
+         dependency.push_back(prog->get_predicate(alloc_predicate(pc))->get_name());
+
+         if(prog->allow_modify()){    
+             predicate_id temp = prog->get_predicate(alloc_predicate(pc))->get_linker_id();    
+             predicate_set(pc,1,temp);
+         }   
+
          cout << "ALLOC " << dependency.back() //prog->get_predicate(alloc_predicate(pc))->get_name()
               << " TO " << reg_string(alloc_reg(pc))
               << endl;
@@ -268,6 +274,12 @@ instr_print(pcounter pc, const bool recurse, const int tabcount, const program *
 				const byte opts(iter_options(pc));
         
             dependency.push_back(prog->get_predicate(iter_predicate(pc))->get_name());     
+        
+            if(prog->allow_modify()){    
+               predicate_id temp = prog->get_predicate(iter_predicate(pc))->get_linker_id();    
+               predicate_set(pc,1,temp);
+            }
+   
             cout << "ITERATE OVER " << dependency.back() << " (";
 
 				if(iter_options_random(opts))
@@ -350,6 +362,11 @@ instr_print(pcounter pc, const bool recurse, const int tabcount, const program *
             const size_t num_args(delete_num_args(pc));
 
             dependency.push_back(pred->get_name());
+            
+            if(prog->allow_modify()){    
+               predicate_id temp = prog->get_predicate(pred_id)->get_linker_id();    
+               predicate_set(pc,1,temp);
+            }   
             
             cout << "DELETE " << pred->get_name()
                  << " USING ";
@@ -464,6 +481,12 @@ instr_print(pcounter pc, const bool recurse, const int tabcount, const program *
             print_tab(tabcount+1);
 
             dependency.push_back(pred->get_name());
+          
+            if(prog->allow_modify()){    
+                predicate_id temp = prog->get_predicate(pid)->get_linker_id();    
+                predicate_set(pc,0,temp);
+            }
+   
             cout << pred->get_name() << "(";
 
             p++;
