@@ -161,7 +161,7 @@ modify_code(){
     cout << "Modifying code for....\n";
 
     // modify rule code
-    for(size_t i(0); i < secondary->num_rules();i++){
+    for(size_t i(1); i < secondary->num_rules();i++){
 
         cout<<"rule : "<<i<<endl;
         cout<<secondary->get_rule(i)->get_string()<<endl;
@@ -182,6 +182,34 @@ modify_code(){
 
 }
 
+bool 
+is_imported(size_t id){
+    
+    string name = primary->get_predicate(id)->get_name();
+
+    for(size_t i(0); i < primary->num_imported_predicates(); i++){
+
+        if(!name.compare(primary->get_imported_predicate(i)->get_as()))
+            return true; 
+    }
+
+    return false;
+}
+
+predicate_id 
+get_imported_predicate_id(predicate_id id){
+
+    string name = primary->get_predicate(id)->get_name();
+
+    for(size_t i(COMMON_PREDICATES); i < secondary->num_predicates();i++){
+
+       if(!name.compare(secondary->get_predicate(i)->get_name().c_str())) 
+            return secondary->get_predicate(i)->get_linker_id();         
+    }
+
+//    assert(false);
+    return id;
+}
 
 void linkerStageOne(){
 
@@ -201,6 +229,7 @@ void linkerStageOne(){
 
     cout <<"total file size : "<<size_tot<<" bytes"<<endl;
 
+    size_t pos_num_predicates;
     position = 0;
     position_wr = 0;
     position_prev = 0; 
@@ -280,7 +309,7 @@ void linkerStageOne(){
 
     // add predicates from import file
     const size_t num_predicates_new = num_predicates_orig + secondary->num_predicates();
-    buf[0] = (byte)(num_predicates_new - COMMON_PREDICATES);   
+    buf[0] = (byte)(num_predicates_new - COMMON_PREDICATES - primary->num_imported_predicates());   
     WRITE_CODE(buf,sizeof(byte));   
 
     cout << "No of source predicates : " << num_predicates_orig << endl;
@@ -360,12 +389,12 @@ COMMON_PREDICATES) << endl;
 
     cout << endl << " Adding Rules ..." << endl;
 
-    // add rules info from import file
-    n_rules_new = n_rules_orig + secondary->num_rules();
+    // add rules info from import file, avoid init from imported file
+    n_rules_new = n_rules_orig + secondary->num_rules() - 1;
     WRITE_CODE(&n_rules_new, sizeof(uint_val));   
 
     cout << "No of source rules : " << n_rules_orig << endl;
-    cout << "No of import rules : " << secondary->num_rules() << endl;    
+    cout << "No of import rules : " << (secondary->num_rules() - 1) << endl;    
 
     position_prev = position;
 
@@ -388,8 +417,8 @@ COMMON_PREDICATES) << endl;
     COPY_TO_OUTPUT(position_prev,position);
     position_prev = position;
 
-    // add rules from import file
-    for(size_t i(0); i < secondary->num_rules(); ++i) {
+    // add rules from import file, skipping init
+    for(size_t i(1); i < secondary->num_rules(); ++i) {
         // read rule string length
         uint_val rule_len;
 
@@ -518,17 +547,22 @@ COMMON_PREDICATES) << endl;
         }
     }
 
-    // read source predicate information
-    for(size_t i(0); i < num_predicates_orig; ++i) {
+    COPY_TO_OUTPUT(position_prev,position);
+    position_prev = position;    
 
+    // read source predicate information, avoid imported predicates
+    for(size_t i(0); i < num_predicates_orig; ++i) {
+        
         READ_CODE(buf, PRED_DESC_SZ);
 
+        if(!is_imported(i))
+            COPY_TO_OUTPUT(position_prev,position);
+        
+        position_prev = position;
     }
 
-    COPY_TO_OUTPUT(position_prev,position); 
-    position_prev = position;
+    size_t offset = primary->num_predicates() - primary->num_imported_predicates();
 
-    size_t offset = primary->num_predicates();
     // add import predicate information/change predicate names
     for(size_t i(COMMON_PREDICATES) ; i < secondary->num_predicates() ; i++) {
 
@@ -583,17 +617,23 @@ COMMON_PREDICATES) << endl;
                    break;
     }
 
-    // read predicate code
+    COPY_TO_OUTPUT(position_prev,position);
+    position_prev = position;
+
+    // read predicate code, avoid imported predicates
     for(size_t i(0); i < primary->num_predicates(); ++i) {
         const size_t size = primary->get_predicate_bytecode_size(i);
         byte_code code = new byte_code_el[size];
 
         READ_CODE(code, size);
+        
+        if(!is_imported(i))
+            COPY_TO_OUTPUT(position_prev,position);
+
+        position_prev = position;
+
         delete code;
     }
-
-    COPY_TO_OUTPUT(position_prev,position);
-    position_prev = position;
 
     // write import predicate code    
     for(size_t i(COMMON_PREDICATES); i < secondary->num_predicates(); i++){
@@ -607,7 +647,7 @@ COMMON_PREDICATES) << endl;
 
     READ_CODE(&num_rules_code_orig, sizeof(uint_val));
 
-    num_rules_code_new = num_rules_code_orig + secondary->num_rules(); 
+    num_rules_code_new = num_rules_code_orig + secondary->num_rules() - 1; 
     WRITE_CODE(&num_rules_code_new,sizeof(uint_val));     
     position_prev = position;
 
@@ -630,19 +670,23 @@ COMMON_PREDICATES) << endl;
         READ_CODE(&num_preds, sizeof(uint_val));
 
         assert(num_preds < 10);
+        
+        COPY_TO_OUTPUT(position_prev,position);
+        position_prev = position;
 
         for(size_t j(0); j < num_preds; ++j) {
-            predicate_id id;
+            predicate_id id,id_imported;
             READ_CODE(&id, sizeof(predicate_id));
+            id_imported = get_imported_predicate_id(id); 
+
+            WRITE_CODE(&id_imported,sizeof(predicate_id));
+            position_prev = position;
         }
 
         delete code;
     }
 
-    COPY_TO_OUTPUT(position_prev,position);
-    position_prev = position;
-
-    for(size_t i(0); i < secondary->num_rules(); ++i) {
+    for(size_t i(1); i < secondary->num_rules(); ++i) {
         code_size_t code_size;
         byte_code code;
 
