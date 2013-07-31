@@ -1,3 +1,11 @@
 * changing external0,1,2 function definitions to non-static
 * declaring them in namespace(similar to lookup..)
 * including relevant header files
+
+    phase 2 linker
+* added char predicate_buffer[104],int linker_id members to predicate class
+* added bool modify_bytecode to program class
+* added get_predicate_number(id) helper in rule class
+* added dependency string vector in instr.hpp
+* changes to instr_print(..) function
+* print_predicate_dependency() function defined in program.cpp
