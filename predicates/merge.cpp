@@ -152,10 +152,11 @@ char* get_filename(char *func_name,struct func_table* table,int size){
 
 }
 
-//relinking predicate dependencies
+//handling secondary predicate dependencies
 void 
 modify_code(){
 
+    // allowing changes to bytecode
     secondary->set_modify(true);
 
     cout << "Modifying code for....\n";
@@ -178,10 +179,12 @@ modify_code(){
         secondary->print_predicate_code(cout_null,secondary->get_predicate(i));
     }
 
+    // disallow changes to bytecode
     secondary->set_modify(false);
 
 }
 
+// check if primary predicate is imported
 bool 
 is_imported(size_t id){
     
@@ -196,6 +199,7 @@ is_imported(size_t id){
     return false;
 }
 
+// get modified id of primary imported predicate
 predicate_id 
 get_imported_predicate_id(predicate_id id){
 
@@ -207,10 +211,10 @@ get_imported_predicate_id(predicate_id id){
             return secondary->get_predicate(i)->get_linker_id();         
     }
 
-//    assert(false);
     return id;
 }
 
+// main linker function
 void linkerStageOne(){
 
     // .m file
@@ -229,7 +233,6 @@ void linkerStageOne(){
 
     cout <<"total file size : "<<size_tot<<" bytes"<<endl;
 
-    size_t pos_num_predicates;
     position = 0;
     position_wr = 0;
     position_prev = 0; 
@@ -253,6 +256,7 @@ void linkerStageOne(){
     infile_md.seekg(0);
     int n = 0;
 
+    // read external function info
     while(n < num_of_lines){
         char buf[MAX_CHARS_PER_LINE];
         infile_md.getline(buf,MAX_CHARS_PER_LINE);
@@ -642,7 +646,7 @@ COMMON_PREDICATES) << endl;
         WRITE_CODE(secondary->get_predicate_bytecode(i),size);
     }
 
-    // read rules code
+    // read rules code, avoid multiple init rule
     uint_val num_rules_code_orig,num_rules_code_new;
 
     READ_CODE(&num_rules_code_orig, sizeof(uint_val));
@@ -720,6 +724,22 @@ COMMON_PREDICATES) << endl;
 
 }
 
+//checks if import is valid
+bool
+checkExport(string predicate){
+
+    for(size_t i(0); i < secondary->num_exported_predicates();i++){
+        
+       if(!predicate.compare(secondary->get_exported_predicate(i))){
+            cout << "import " << predicate << " valid\n";
+            return true; 
+
+        }
+    }
+
+    return false;
+}
+
 int
 main(int argc, char **argv)
 {
@@ -740,15 +760,17 @@ main(int argc, char **argv)
 
     // read import file names
     cout << "Import Files...\n";
-    for(uint32_t i(0); i < primary->num_imported_predicates(); i++){
+
+    for(i = 0; i < primary->num_imported_predicates();i++){
 
         cout << primary->get_imported_predicate(i)->get_file() << endl; 
         secondary = new program(primary->get_imported_predicate(i)->get_file());
+        checkExport(primary->get_imported_predicate(i)->get_imp());
         linkerStageOne();
-        delete secondary;
 
     }
 
+    delete secondary;
     delete primary;
     return EXIT_SUCCESS;
 }
