@@ -1,0 +1,46 @@
+type linear route back(node,node).
+type linear down(node,list int).
+type linear up(node,list int).
+type linear sorted(node,node,list int).
+type linear buildpivot(node,list int,int ,list int,list int).
+type linear waitpivot(node,node,node,int).
+type linear append(node,list int,list int).
+type linear reverse(node,list int,list int,list int).
+type linear reverse2(node,list int,list int).
+
+const tosort = str2intlist(@arg1).
+
+down(@0,tosort).
+
+down(A,[]) -o up(A,[]).
+down(A,[X]) -o up(A,[X]).
+
+down(A,[X,Y]), X < Y -o up(A,[X,Y]).
+down(A,[X,Y]), X >= Y -o up(A,[Y,X]).
+
+down(A,[A | L]) -o buildpivot(A,L,X, [],[]).
+
+buildpivot(A,[],X,Smaller,Greater) -o create B C. (back(B,A), down(B,Smaller), back(C,A), down(C,Greater), waitpivot(A,B,C,X)).
+
+buildpivot(A, [Y | L], X, Smaller, Greater),
+Y <= X
+    -o buildpivot(A,L,X,[Y | Smaller], Greater).
+buildpivot(A, [Y | L], X, Smaller, Greater), 
+Y > X
+    -o buildpivot(A,L,X,Smaller,[Y | Greater]).
+
+waitpivot(A,NodeSmaller, NodeGreater, Pivot),
+sorted(A, NodeSmaller, Smaller),
+sorted(A,NodeGreater, Greater)
+    -o append(A,Smaller,[Pivot | Greater]).
+
+append(A,L1, L2) 
+    -o reverse(A,L1,L2,[]).
+
+reverse(A, [], L2,L3) -o reverse2(A,L3,L2).
+reverse(A, [X | L], L2,L3) -o reverse(A,L,L2, [X | L3]).
+
+reverse2(A,[],Result) -o up(A,Result).
+reverse2(A,[X | L1], L2) -o reverse2(A,L1, [X | L2]).
+
+up(A,L), back(A,B) -o sorted(B,A,L). 
