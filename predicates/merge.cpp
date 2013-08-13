@@ -67,6 +67,9 @@ static program* secondary;
 std::ostream cout_null(0);
 code_size_t const_code_size;
 
+std::vector<string> meld_file;
+std::vector<vm::program*> secondary_list;
+
 std::string
 field_type_string_(field_type type)
 {
@@ -215,7 +218,7 @@ get_imported_predicate_id(predicate_id id){
 }
 
 // main linker function
-void linkerStageOne(){
+void linker(){
 
     // .m file
     std::ifstream infile_m(m_file,std::ifstream::binary);
@@ -753,7 +756,7 @@ main(int argc, char **argv)
     cout << ".md file : " << md_file << endl;
     cout << ".ml file : " << ml_file << endl;
 
-    const string file(bytefile1);
+    string file(bytefile1);
     int i;    
 
     primary = new program(file);
@@ -761,17 +764,54 @@ main(int argc, char **argv)
     // read import file names
     cout << "Import Files...\n";
 
+    //For multiple import files
     for(i = 0; i < primary->num_imported_predicates();i++){
 
-        cout << primary->get_imported_predicate(i)->get_file() << endl; 
-        secondary = new program(primary->get_imported_predicate(i)->get_file());
-        checkExport(primary->get_imported_predicate(i)->get_imp());
-        linkerStageOne();
+        string import_file = primary->get_imported_predicate(i)->get_file(); 
+        cout << "importing from ... " << import_file << endl;
+
+        if (std::find(meld_file.begin(),meld_file.end(), import_file) != meld_file.end())
+        {
+           cout << import_file << " already processed\n"; 
+           continue;
+        }  
+    
+        meld_file.push_back(import_file);
+    
+    }
+
+    //list of import programs
+    for(i = 0 ; i < meld_file.size(); i++){
+        
+        string import_file = meld_file[i];
+        cout << "importing from ... " << import_file << endl;
+        
+        secondary = new program(import_file);
+        secondary_list.push_back(secondary);
 
     }
 
-    delete secondary;
+    linker();
+
+/*
+    for(i = 0; i < primary->num_imported_predicates();i++){
+
+        cout << primary->get_imported_predicate(i)->get_file() << endl;
+        secondary = new program(primary->get_imported_predicate(i)->get_file());
+        checkExport(primary->get_imported_predicate(i)->get_imp());
+        linker();
+
+    }
+*/
+//    delete secondary;    
     delete primary;
+
+    for(i = 0; i < secondary_list.size(); i++){
+
+    delete secondary_list[i];
+
+    }
+
     return EXIT_SUCCESS;
 }
 
