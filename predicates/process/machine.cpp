@@ -149,7 +149,7 @@ machine::route(const node* from, sched::base *sched_caller, const node::node_id 
 {  
    remote* rem(rout.find_remote(id));
    
-   assert(sched_caller != NULL);
+   assert(sched_caller != NULL); 
    assert(id <= this->all->DATABASE->max_id());
    
    if(rem == remote::self) {

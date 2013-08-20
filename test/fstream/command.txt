@@ -6,3 +6,8 @@
 (cl-meld:meld-compile "/home/rupesh/blinkybot/bbsim/meld-programs/rainbow.meld" "/home/rupesh/blinkybot/bbsim/meld-programs/rainbow_newC")
 (cl-meld:meld-compile "/home/rupesh/blinkybot/claytronics_meld/meld/blank.meld" "/home/rupesh/blinkybot/claytronics_meld/meld/blank")
 (cl-meld:meld-compile "/home/rupesh/blinkybot/tools_meld/meldtools/predicates/qsort.meld" "/home/rupesh/blinkybot/tools_meld/meldtools/predicates/qsort")
+(cl-meld:meld-compile "/home/rupesh/blinkybot/mergesort.meld" "/home/rupesh/blinkybot/mergesort")
+(cl-meld:meld-compile "/home/rupesh/blinkybot/programs_meld/programs/8queens/8queens-data8.meld" "/home/rupesh/blinkybot/programs_meld/programs/8queens/8queens-data8")
+
+(cl-meld:meld-compile "/home/rupesh/blinkybot/programs_meld/programs/8queens/8queens.meld" "/home/rupesh/blinkybot/programs_meld/programs/8queens/8queens_removed")
+(cl-meld:meld-compile "/home/rupesh/blinkybot/programs_meld/programs/8queens/8queens-data8-new.meld" "/home/rupesh/blinkybot/programs_meld/programs/8queens/8queens_data-8-new")

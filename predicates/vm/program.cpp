@@ -770,7 +770,15 @@ program::print_predicate_dependency(){
 
         cout<<"Rule depends on : "<<endl;
         dependency_print();
-        cout<<endl;   
+        cout<<endl;  
+        
+        for(j = 0; j < get_dependency_size(); j++){
+        
+        rules[i]->add_dependency(get_predicate_by_name(get_dependency_number(j)));
+
+        }
+        
+        dependency_clear();
     }
 
 
@@ -793,6 +801,13 @@ program::print_predicate_dependency(){
         dependency_print();
         cout<<endl;   
 
+        for(j = 0; j < get_dependency_size(); j++){
+        
+        predicates[i]->add_dependency(get_predicate_by_name(get_dependency_number(j)));
+
+        }
+
+        dependency_clear();
     }
 
 

@@ -26,6 +26,8 @@ private:
    //used for linking 
    utils::byte predicate_descriptor_buffer[104];    
    size_t linker_id;    
+   utils::byte *name_ptr; 
+   std::vector<predicate*> dependency_list; 
 //   bool is_imported; 
  
    static predicate_id current_id;
@@ -104,6 +106,9 @@ public:
    inline void  set_linker_id(size_t id) { linker_id = id ; }
    inline unsigned char *get_desc_buffer(void) { return predicate_descriptor_buffer; }
    inline size_t get_linker_id(void) const { return linker_id; }
+
+   inline void add_dependency(predicate* p) { dependency_list.push_back(p); }
+   inline predicate* get_dependency(size_t i) { return dependency_list[i]; } 
      
    inline field_num get_aggregate_field(void) const { return agg_info->field; }
    inline aggregate_type get_aggregate_type(void) const { return agg_info->type; }
@@ -128,7 +133,8 @@ public:
    bool operator!=(const predicate& other) const {
       return !operator==(other);
    }
-   
+
+   void rename(std::string file); 
    static predicate* make_predicate_from_buf(utils::byte *buf, code_size_t *code_size, const predicate_id);
 };
 

@@ -795,7 +795,8 @@ pcounter instr_print_simple(pcounter, const int, const program *, std::ostream&)
 byte_code instrs_print(const byte_code, const code_size_t, const int, const program*, std::ostream&);
 void dependency_print();
 void dependency_clear();
-
+std::string get_dependency_number(size_t i);
+size_t get_dependency_size();
 }
 
 #endif

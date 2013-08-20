@@ -610,14 +610,22 @@ void dependency_print(){
     for(j = 0; j < dependency.size();j++) 
         cout<<dependency[j]<<endl;
 
-    dependency.clear();
-
 }
 
 void dependency_clear(){
 
     dependency.clear();
 
+}
+
+string get_dependency_number(size_t i){
+
+    return dependency[i];
+}
+
+size_t get_dependency_size(){
+
+    return dependency.size();
 }
   
 }

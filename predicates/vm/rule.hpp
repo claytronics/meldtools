@@ -24,6 +24,7 @@ class rule
 		code_size_t code_size;
 		typedef std::vector<predicate*> predicate_vector;
       predicate_vector predicates;
+      predicate_vector dependency_list;  
       bool is_persistent;
 
    public:
@@ -50,6 +51,9 @@ class rule
 		inline predicate_iterator begin_predicates(void) const { return predicates.begin(); }
 		inline predicate_iterator end_predicates(void) const { return predicates.end(); }
         inline predicate *get_predicate_number(size_t i) { return predicates[i]; }
+
+      inline void add_dependency(predicate* p) { dependency_list.push_back(p); }
+      inline predicate* get_dependency(size_t i) { return dependency_list[i]; }          
 
       explicit rule(const rule_id _id, const std::string& _str):
          id(_id), str(_str), is_persistent(false) { }
