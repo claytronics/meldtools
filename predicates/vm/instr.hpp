@@ -365,6 +365,8 @@ inline code_offset_t reset_linear_jump(const pcounter pc) { return jump_get(pc, 
 
 /* RULE ID */
 inline size_t rule_get_id(const pcounter pc) { return pcounter_uint(pc + 1); }
+//linker change
+inline void rule_set_id(const pcounter pc, size_t id) { *(pc + 1) = (uint_val)id;  }
 
 /* NEW NODE */
 inline reg_num new_node_reg(const pcounter pc) { return reg_get(pc, 1); }

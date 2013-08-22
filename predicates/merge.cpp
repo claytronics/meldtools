@@ -432,6 +432,7 @@ void linker(){
 
     //add init rules from primary and secondary files
 
+    size_t rule_offset = 0;
     // primary program init rule
     {   
         uint_val rule_len;
@@ -443,8 +444,11 @@ void linker(){
         char str[rule_len + 1];
 
         READ_CODE(str, sizeof(char) * rule_len);
-
+        
         str[rule_len] = '\0';
+
+        primary->get_rule(RULE0)->set_linker_id(rule_offset);
+        rule_offset++;
     }
 
     COPY_TO_OUTPUT(position_prev,position);
@@ -465,6 +469,8 @@ void linker(){
 
     WRITE_CODE(str,rule_len);       
 
+    secondary_list[i]->get_rule(RULE0)->set_linker_id(rule_offset);
+    rule_offset++;
     }
 
     // remaining primary rules
@@ -482,6 +488,8 @@ void linker(){
 
         str[rule_len] = '\0';
 
+        primary->get_rule(i)->set_linker_id(rule_offset);
+        rule_offset++;
     }
 
     COPY_TO_OUTPUT(position_prev,position);
@@ -502,6 +510,8 @@ void linker(){
 
             WRITE_CODE(str,rule_len);       
 
+            secondary_list[i]->get_rule(i)->set_linker_id(rule_offset);
+            rule_offset++;
         }
     }
     // read string constants
@@ -771,6 +781,8 @@ void linker(){
     WRITE_CODE(&num_rules_code_new,sizeof(uint_val));     
     position_prev = position;
 
+    
+
 /*
     //rule0 of primary program
     {
@@ -1038,6 +1050,8 @@ main(int argc, char **argv)
     // TODO : support for multiple import files
     linker();
 
+    primary->print_code = true;
+//    primary->print_predicate_dependency();
 /*
     for(i = 0; i < primary->num_imported_predicates();i++){
 

@@ -19,6 +19,7 @@ class rule
 
       rule_id id;
       //linker  
+      size_t linker_id;
       std::string str;
       byte_code code;
 		code_size_t code_size;
@@ -51,9 +52,13 @@ class rule
 		inline predicate_iterator begin_predicates(void) const { return predicates.begin(); }
 		inline predicate_iterator end_predicates(void) const { return predicates.end(); }
         inline predicate *get_predicate_number(size_t i) { return predicates[i]; }
-
+    
       inline void add_dependency(predicate* p) { dependency_list.push_back(p); }
       inline predicate* get_dependency(size_t i) { return dependency_list[i]; }          
+      
+      inline void  set_linker_id(size_t id) { linker_id = id ; }
+      inline size_t get_linker_id(void) const { return linker_id; }
+
 
       explicit rule(const rule_id _id, const std::string& _str):
          id(_id), str(_str), is_persistent(false) { }

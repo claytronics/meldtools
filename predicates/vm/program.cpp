@@ -90,6 +90,7 @@ program::program(const string& _filename):
    // skip nodes
    uint_val num_nodes;
 	READ_CODE(&num_nodes, sizeof(uint_val));
+    cout << "num_nodes : " << num_nodes << endl;
 
 	SEEK_CODE(num_nodes * database::node_size);
 

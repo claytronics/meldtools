@@ -457,6 +457,11 @@ instr_print(pcounter pc, const bool recurse, const int tabcount, const program *
       case RULE_INSTR: {
             const size_t rule_id(rule_get_id(pc));
 
+            if(prog->allow_modify()){
+            size_t new_id = prog->get_rule(rule_id)->get_linker_id();
+            rule_set_id(pc,new_id);
+            }
+
             cout << "RULE " << rule_id << endl;
         }
         break;
@@ -484,7 +489,7 @@ instr_print(pcounter pc, const bool recurse, const int tabcount, const program *
           
             if(prog->allow_modify()){    
                 predicate_id temp = prog->get_predicate(pid)->get_linker_id();    
-                predicate_set(pc,0,temp);
+                predicate_set(p,0,temp);
             }
    
             cout << pred->get_name() << "(";
