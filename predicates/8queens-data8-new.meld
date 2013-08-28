@@ -2,7 +2,9 @@ type left(node, node).
 type right(node, node).
 type down(node, node).
 type coord(node, int, int).
+type linear receive-down(node, list node, list int).
 
+receive-down(@0, [], []).
 !coord(@0, 0, 0).
 !down(@0, @8).
 !left(@0, @0).

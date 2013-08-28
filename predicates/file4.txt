@@ -1,0 +1,89 @@
+num_predicates : 17
+num_nodes : 1
+import down as qsort from quicksort_i
+num_args : 1
+n_rules : 16
+rule 0 : init -o axioms
+rule 1 : down(MV1), MV1 = nil -o up(nil).
+rule 2 : down(MV2), X = head(MV2), not(test-nil(MV2)), nil = tail(MV2) -o 
+			up(cons(X,nil)).
+rule 3 : down(MV4), X = head(MV4), MV5 = tail(MV4), Y = head(MV5), 
+			X < Y, not(test-nil(MV4)), not(test-nil(MV5)), nil = tail(MV5) -o up(cons(X,cons(Y,nil))).
+rule 4 : down(MV7), X = head(MV7), MV8 = tail(MV7), Y = head(MV8), 
+			X >= Y, not(test-nil(MV7)), not(test-nil(MV8)), nil = tail(MV8) -o up(cons(Y,cons(X,nil))).
+rule 5 : down(MV10), X = head(MV10), L = tail(MV10), not(test-nil(MV10)) -o 
+			buildpivot(L, X, nil, nil).
+rule 6 : buildpivot(MV12, X, Smaller, Greater), MV12 = nil -o exists B, C. (back(host-id), 
+			down(Smaller), back(host-id), down(Greater), waitpivot(B, C, X)).
+rule 7 : buildpivot(MV13, X, Smaller, Greater), Y = head(MV13), L = tail(MV13), Y <= X, 
+			not(test-nil(MV13)) -o buildpivot(L, X, cons(Y,Smaller), Greater).
+rule 8 : buildpivot(MV15, X, Smaller, Greater), Y = head(MV15), L = tail(MV15), Y > X, 
+			not(test-nil(MV15)) -o buildpivot(L, X, Smaller, cons(Y,Greater)).
+rule 9 : waitpivot(NodeSmaller, NodeGreater, Pivot), sorted(NodeSmaller, Smaller), sorted(NodeGreater, Greater) -o append(Smaller, cons(Pivot,Greater)).
+rule 10 : append(L1, L2) -o reverse(L1, L2, nil).
+rule 11 : reverse(MV17, L2, L3), MV17 = nil -o reverse2(L3, L2).
+rule 12 : reverse(MV18, L2, L3), X = head(MV18), L = tail(MV18), not(test-nil(MV18)) -o 
+			reverse(L, L2, cons(X,L3)).
+rule 13 : reverse2(MV20, Result), MV20 = nil -o up(Result).
+rule 14 : reverse2(MV21, L2), X = head(MV21), L1 = tail(MV21), not(test-nil(MV21)) -o 
+			reverse2(L1, cons(X,L2)).
+rule 15 : up(L), back(B) -o sorted(host-id, L)@B.
+num_strings : 0
+num_constants : 1
+const type 0 : 
+const_code_size : 14
+predicate 0 : _init
+predicate 1 : set-priority
+predicate 2 : setcolor
+predicate 3 : setedgelabel
+predicate 4 : write-string
+predicate 5 : add-priority
+predicate 6 : schedule-next
+predicate 7 : setColor2
+predicate 8 : back.quicksort_i.m
+predicate 9 : down.quicksort_i.m
+predicate 10 : up.quicksort_i.m
+predicate 11 : sorted.quicksort_i.m
+predicate 12 : buildpivot.quicksort_i.m
+predicate 13 : waitpivot.quicksort_i.m
+predicate 14 : append.quicksort_i.m
+predicate 15 : reverse.quicksort_i.m
+predicate 16 : reverse2.quicksort_i.m
+CALL_INSTR
+lookup_external_function : id : 21
+--> node 0/(id 0) (0x174d0c0) <--
+ back.quicksort_i.m(node)
+	back.quicksort_i.m(@0)@4 
+ sorted.quicksort_i.m(node, int list)
+	sorted.quicksort_i.m(@0, []) sorted.quicksort_i.m(@0, [3,4]) 
+ up.quicksort_i.m(int list)
+	up.quicksort_i.m([])@2 
+ waitpivot.quicksort_i.m(node, node, int)
+	waitpivot.quicksort_i.m(@1, @2, 1) waitpivot.quicksort_i.m(@3, @4, 5) waitpivot.quicksort_i.m(@5, @6, 2)
+
+--> node 1/(id 1) (0x174d220) <--
+
+--> node 2/(id 2) (0x174d380) <--
+
+--> node 3/(id 3) (0x174d4e0) <--
+
+--> node 4/(id 4) (0x174d640) <--
+
+--> node 5/(id 5) (0x174d7a0) <--
+
+--> node 6/(id 6) (0x174d900) <--
+
+0
+back.quicksort_i.m(@0)@4
+up.quicksort_i.m([])@2
+sorted.quicksort_i.m(@0, [3,4])
+sorted.quicksort_i.m(@0, [])
+waitpivot.quicksort_i.m(@1, @2, 1)
+waitpivot.quicksort_i.m(@3, @4, 5)
+waitpivot.quicksort_i.m(@5, @6, 2)
+1
+2
+3
+4
+5
+6

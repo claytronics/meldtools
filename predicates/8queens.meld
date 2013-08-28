@@ -1,7 +1,6 @@
 
 type linear propagate-left(node, list node, list int).
 type linear propagate-right(node, list node, list int).
-type linear receive-down(node, list node, list int).
 type linear test-and-send-down(node, list node, list int).
 type linear test-y(node, int, list int, list node, list int).
 type linear test-diag-left(node, int, int, list int, list node, list int).
@@ -13,12 +12,11 @@ import left(node, node) as left_ from data.
 import right(node, node) as right_ from data.
 import down(node, node) as down_ from data.
 import coord(node, int, int) as coord_ from data.
+import linear receive-down(node, list node, list int) as receive-down_ from data.
 
 const size = 8.
 
-receive-down(@0, [], []).
-
-receive-down(A, Nodes, Coords)
+receive-down_(A, Nodes, Coords)
    -o {R | !right_(A, R), R <> A | propagate-right(R, Nodes, Coords)},
       {L | !left_(A, L), L <> A | propagate-left(L, Nodes, Coords)},
       test-and-send-down(A, Nodes, Coords).
@@ -72,4 +70,4 @@ send-down(A, Nodes, Coords),
 send-down(A, Nodes, Coords),
 !down_(A, B),
 A <> B
-   -o receive-down(B, Nodes, Coords).
+   -o receive-down_(B, Nodes, Coords).

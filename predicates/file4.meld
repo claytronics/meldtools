@@ -1,0 +1,6 @@
+import linear down(node, list int) as qsort from quicksort_i.
+
+const tosort = str2intlist(@arg1).
+
+qsort(@0, tosort).
+

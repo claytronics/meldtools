@@ -64,11 +64,12 @@ static bool print = false;
 static program* primary;
 static program* secondary;
 
+std::vector<string> meld_file;
+std::vector<vm::program*> secondary_list;
+
 std::ostream cout_null(0);
 code_size_t const_code_size;
 
-std::vector<string> meld_file;
-std::vector<vm::program*> secondary_list;
 
 std::string
 field_type_string_(field_type type)
@@ -155,7 +156,7 @@ char* get_filename(char *func_name,struct func_table* table,int size){
 
 }
 
-//handling secondary predicate dependencies
+//modify predicate and rule code for given program
 void 
 modify_code(vm::program* prog){
 
@@ -336,12 +337,13 @@ void linker(){
     for(uint32_t i(0); i < secondary_list.size(); i++){
     
     num_imported_predicates = num_imported_predicates + secondary_list[i]->num_predicates();
-    num_rules_new = num_rules_new + secondary_list[i]->num_rules();
+    num_rules_new = num_rules_new + secondary_list[i]->num_rules() - 1;
 
     }     
 
+
     // minus 1 to exclude init    
-    num_common_predicates = (COMMON_PREDICATES - 1) * secondary_list.size();
+    num_common_predicates = (COMMON_PREDICATES) * secondary_list.size();
     
     const size_t num_predicates_new = num_predicates_orig + num_imported_predicates - num_common_predicates - primary->num_imported_predicates();
     buf[0] = (byte)(num_predicates_new);   
@@ -353,11 +355,44 @@ void linker(){
     // reset last byte read pointer 
     position_prev = position;
 
-    // skip nodes
+    // num nodes
     uint_val num_nodes;
     READ_CODE(&num_nodes, sizeof(uint_val));
 
+
+    // get file with max nodes
+    int max = num_nodes;
+    int index = -1;    
+
+    for(size_t i(0); i < secondary_list.size(); i++){
+        
+        if(secondary_list[i]->get_num_nodes() > max){
+            max = secondary_list[i]->get_num_nodes();
+            index = i;
+        }        
+
+    }
+    
+    if(index != -1){
+        size_t num_nodes_new = secondary_list[index]->get_num_nodes();
+        WRITE_CODE(&num_nodes_new,sizeof(uint_val));
+
+        uint_val new_size = num_nodes_new * database::node_size;    
+
+        WRITE_CODE(secondary_list[index]->get_buffer(),new_size);   
+    }
+    else{
+        size_t num_nodes_new = primary->get_num_nodes();
+        WRITE_CODE(&num_nodes_new,sizeof(uint_val));
+
+        uint_val new_size = num_nodes_new * database::node_size;    
+
+        WRITE_CODE(primary->get_buffer(),new_size);   
+    }
+
     SEEK_CODE(num_nodes * database::node_size);
+
+    position_prev = position;
 
     uint32_t number_imported_predicates;
     // read imported/exported predicates
@@ -433,6 +468,8 @@ void linker(){
     //add init rules from primary and secondary files
 
     size_t rule_offset = 0;
+
+/*
     // primary program init rule
     {   
         uint_val rule_len;
@@ -447,14 +484,15 @@ void linker(){
         
         str[rule_len] = '\0';
 
-        primary->get_rule(RULE0)->set_linker_id(rule_offset);
-        rule_offset++;
+//        primary->get_rule(RULE0)->set_linker_id(rule_offset);
+//        rule_offset++;
     }
 
-    COPY_TO_OUTPUT(position_prev,position);
+//    COPY_TO_OUTPUT(position_prev,position);
     position_prev = position;
+*/
 
-
+/*
     // add init rule from import files
     for(uint32_t i(0); i < secondary_list.size(); i++){
     // read rule string length
@@ -473,8 +511,10 @@ void linker(){
     rule_offset++;
     }
 
-    // remaining primary rules
-    for(size_t i(1); i < n_rules_orig; ++i) {
+*/
+
+    // add primary rules
+    for(size_t i(0); i < n_rules_orig; ++i) {
         // read rule string length
         uint_val rule_len;
 
@@ -510,10 +550,11 @@ void linker(){
 
             WRITE_CODE(str,rule_len);       
 
-            secondary_list[i]->get_rule(i)->set_linker_id(rule_offset);
+            secondary_list[j]->get_rule(i)->set_linker_id(rule_offset);
             rule_offset++;
         }
     }
+
     // read string constants
     int_val num_strings;
     READ_CODE(&num_strings, sizeof(int_val));
@@ -633,6 +674,7 @@ void linker(){
 
 
     size_t offset = 0;
+
     // read source predicate information, avoid imported predicates
     for(size_t i(0); i < num_predicates_orig; ++i) {
         
@@ -652,6 +694,7 @@ void linker(){
     // offset used to number secondary predicates
     assert(offset == (primary->num_predicates()-primary->num_imported_predicates()));
 
+/*
     // add init predicate from secondary files
     for(size_t j(0); j < secondary_list.size(); j++){
 
@@ -659,11 +702,11 @@ void linker(){
         string filename = secondary_list[j]->get_name();
         secondary_list[j]->get_predicate(0)->rename(filename);
         WRITE_CODE(secondary_list[j]->get_predicate(0)->get_desc_buffer(),PRED_DESC_SZ);
-        secondary_list[j]->get_predicate(0)->set_linker_id(offset);
+        secondary_list[j]->get_predicate(0)->set_linker_id(0);
         offset++;
         
     }
-
+*/
     // add import predicate information/change predicate names
     for(size_t j(0); j < secondary_list.size();j++){
         for(size_t i(COMMON_PREDICATES) ; i < secondary_list[j]->num_predicates() ; i++) {
@@ -756,16 +799,17 @@ void linker(){
         delete code;
     }
 
+/*
     // write init predicate code for import files
     for(size_t j(0); j < secondary_list.size();j++){
         const size_t size = secondary_list[j]->get_predicate_bytecode_size(0);
         
         WRITE_CODE(secondary_list[j]->get_predicate_bytecode(0),size);
     }
-
+*/
     // write import predicate code    
     for(size_t j(0); j < secondary_list.size();j++){
-        for(size_t i(COMMON_PREDICATES); i < secondary->num_predicates(); i++){
+        for(size_t i(COMMON_PREDICATES); i < secondary_list[0]->num_predicates(); i++){
             const size_t size = secondary_list[j]->get_predicate_bytecode_size(i);
 
             WRITE_CODE(secondary_list[j]->get_predicate_bytecode(i),size);
@@ -822,6 +866,7 @@ void linker(){
 
     }
 */
+/*
     { 
         code_size_t code_size;
         byte_code code;
@@ -848,7 +893,8 @@ void linker(){
             WRITE_CODE(&id, sizeof(predicate_id));
         }
     }
-
+*/
+/*
     //rule0 of secondary programs
 
     for(size_t k(0); k < secondary_list.size();k++){
@@ -879,6 +925,7 @@ void linker(){
         }
 
     }
+*/
 
 /*
     // remaining primary rules
@@ -918,7 +965,7 @@ void linker(){
     }
 */
 
-    for(size_t i(1); i < primary->num_rules(); ++i) {
+    for(size_t i(0); i < primary->num_rules(); ++i) {
         code_size_t code_size;
         byte_code code;
 

@@ -1,0 +1,88 @@
+num_predicates : 17
+num_nodes : 1
+num_args : 1
+n_rules : 16
+rule 0 : init -o axioms
+rule 1 : down(MV2), MV2 = nil -o up(nil).
+rule 2 : down(MV3), X = head(MV3), not(test-nil(MV3)), nil = tail(MV3) -o 
+			up(cons(X,nil)).
+rule 3 : down(MV5), X = head(MV5), MV6 = tail(MV5), Y = head(MV6), 
+			X < Y, not(test-nil(MV5)), not(test-nil(MV6)), nil = tail(MV6) -o up(cons(X,cons(Y,nil))).
+rule 4 : down(MV8), X = head(MV8), MV9 = tail(MV8), Y = head(MV9), 
+			X >= Y, not(test-nil(MV8)), not(test-nil(MV9)), nil = tail(MV9) -o up(cons(Y,cons(X,nil))).
+rule 5 : down(MV11), X = head(MV11), L = tail(MV11), not(test-nil(MV11)) -o 
+			buildpivot(L, X, nil, nil).
+rule 6 : buildpivot(MV13, X, Smaller, Greater), MV13 = nil -o exists B, C. (back(host-id), 
+			down(Smaller), back(host-id), down(Greater), waitpivot(B, C, X)).
+rule 7 : buildpivot(MV14, X, Smaller, Greater), Y = head(MV14), L = tail(MV14), Y <= X, 
+			not(test-nil(MV14)) -o buildpivot(L, X, cons(Y,Smaller), Greater).
+rule 8 : buildpivot(MV16, X, Smaller, Greater), Y = head(MV16), L = tail(MV16), Y > X, 
+			not(test-nil(MV16)) -o buildpivot(L, X, Smaller, cons(Y,Greater)).
+rule 9 : waitpivot(NodeSmaller, NodeGreater, Pivot), sorted(NodeSmaller, Smaller), sorted(NodeGreater, Greater) -o append(Smaller, cons(Pivot,Greater)).
+rule 10 : append(L1, L2) -o reverse(L1, L2, nil).
+rule 11 : reverse(MV18, L2, L3), MV18 = nil -o reverse2(L3, L2).
+rule 12 : reverse(MV19, L2, L3), X = head(MV19), L = tail(MV19), not(test-nil(MV19)) -o 
+			reverse(L, L2, cons(X,L3)).
+rule 13 : reverse2(MV21, Result), MV21 = nil -o up(Result).
+rule 14 : reverse2(MV22, L2), X = head(MV22), L1 = tail(MV22), not(test-nil(MV22)) -o 
+			reverse2(L1, cons(X,L2)).
+rule 15 : up(L), back(B) -o sorted(host-id, L)@B.
+num_strings : 0
+num_constants : 1
+const type 0 : 
+const_code_size : 14
+predicate 0 : _init
+predicate 1 : set-priority
+predicate 2 : setcolor
+predicate 3 : setedgelabel
+predicate 4 : write-string
+predicate 5 : add-priority
+predicate 6 : schedule-next
+predicate 7 : setColor2
+predicate 8 : back
+predicate 9 : down
+predicate 10 : up
+predicate 11 : sorted
+predicate 12 : buildpivot
+predicate 13 : waitpivot
+predicate 14 : append
+predicate 15 : reverse
+predicate 16 : reverse2
+CALL_INSTR
+lookup_external_function : id : 21
+--> node 0/(id 0) (0x17a6f50) <--
+ back(node)
+	back(@0)@4 
+ sorted(node, int list)
+	sorted(@0, []) sorted(@0, [3,4]) 
+ up(int list)
+	up([])@2 
+ waitpivot(node, node, int)
+	waitpivot(@1, @2, 1) waitpivot(@3, @4, 5) waitpivot(@5, @6, 2)
+
+--> node 1/(id 1) (0x17a70b0) <--
+
+--> node 2/(id 2) (0x17a7210) <--
+
+--> node 3/(id 3) (0x17a7370) <--
+
+--> node 4/(id 4) (0x17a74d0) <--
+
+--> node 5/(id 5) (0x17a7630) <--
+
+--> node 6/(id 6) (0x17a7790) <--
+
+0
+back(@0)@4
+up([])@2
+sorted(@0, [3,4])
+sorted(@0, [])
+waitpivot(@1, @2, 1)
+waitpivot(@3, @4, 5)
+waitpivot(@5, @6, 2)
+1
+2
+3
+4
+5
+6

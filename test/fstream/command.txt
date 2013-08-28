@@ -1,4 +1,5 @@
-(cl-meld:meld-compile "/home/rupesh/blinkybot/tools_meld/meldtools/test/fstream/IEtest.meld" "/home/rupesh/blinkybot/tools_meld/meldtools/test/fstream/IEtest")
+(cl-meld:meld-compile "/home/rupesh/blinkybot/tools_meld/meldtools/test/fstream/visit6.meld" "/home/rupesh/blinkybot/tools_meld/meldtools/test/fstream/visit6")
+
 (cl-meld:meld-compile "/home/rupesh/blinkybot/tools_meld/meldtools/test/fstream/tap_propagate.meld" "/home/rupesh/blinkybot/tools_meld/meldtools/test/fstream/tap_propagate")
 (cl-meld:meld-compile "/home/rupesh/blinkybot/tools_meld/meldtools/test/fstream/test.meld" "/home/rupesh/blinkybot/tools_meld/meldtools/test/fstream/test_newC")
 (cl-meld:meld-compile "/home/rupesh/blinkybot/tools_meld/meldtools/test/fstream/file3.meld" "/home/rupesh/blinkybot/tools_meld/meldtools/test/fstream/file3")
@@ -12,6 +13,14 @@
 (cl-meld:meld-compile "/home/rupesh/blinkybot/tools_meld/meldtools/predicates/8queens.meld" "/home/rupesh/blinkybot/tools_meld/meldtools/predicates/8queens")
 (cl-meld:meld-compile "/home/rupesh/blinkybot/programs_meld/programs/8queens/8queens-data8-new.meld" "/home/rupesh/blinkybot/programs_meld/programs/8queens/8queens_data-8-new")
 
-(cl-meld:meld-compile "/home/rupesh/blinkybot/tools_meld/meldtools/predicates/8queens-data8-new.meld" "/home/rupesh/blinkybot/tools_meld/meldtools/predicates/8queens-data8-new")
+(cl-meld:meld-compile "/home/rupesh/blinkybot/tools_meld/meldtools/predicates/8queens-data8-new.meld" "/home/rupesh/blinkybot/tools_meld/meldtools/predicates/data")
 
 (cl-meld:meld-compile "/home/rupesh/blinkybot/programs_meld/programs/8queens/8queens_original.meld" "/home/rupesh/blinkybot/programs_meld/programs/8queens/8queens_original")
+
+
+
+(cl-meld:meld-compile "/home/rupesh/blinkybot/tools_meld/meldtools/predicates/quicksort_i.meld" "/home/rupesh/blinkybot/tools_meld/meldtools/predicates/quicksort_i")
+
+(cl-meld:meld-compile "/home/rupesh/blinkybot/tools_meld/meldtools/predicates/file4.meld" "/home/rupesh/blinkybot/tools_meld/meldtools/predicates/file4")
+
+(cl-meld:meld-compile "/home/rupesh/blinkybot/programs_meld/programs/quicksort/quicksort_.meld" "/home/rupesh/blinkybot/programs_meld/programs/quicksort/quicksort")

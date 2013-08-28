@@ -91,8 +91,13 @@ program::program(const string& _filename):
    uint_val num_nodes;
 	READ_CODE(&num_nodes, sizeof(uint_val));
     cout << "num_nodes : " << num_nodes << endl;
+    set_num_nodes(num_nodes);
 
-	SEEK_CODE(num_nodes * database::node_size);
+//	SEEK_CODE(num_nodes * database::node_size);
+    size_t db_size = num_nodes * database::node_size;
+    unsigned char* db_buf = new unsigned char[db_size];
+    READ_CODE(db_buf,db_size);
+    set_buffer(db_buf);
 
    // read imported/exported predicates
    if(VERSION_AT_LEAST(0, 9)) {

@@ -57,6 +57,9 @@ private:
 
 	size_t num_args;
    size_t number_rules;
+   size_t number_nodes;
+    
+   unsigned char* db_buffer;
 
    std::vector<rule*> rules;
 
@@ -118,8 +121,15 @@ public:
     inline std::string get_exported_predicate(const size_t id) const {
       assert(id < exported_predicates.size());  
       return exported_predicates[id];  
-    } 
+    }
 
+   // linker
+   inline void set_buffer(unsigned char* buf) { db_buffer = buf; }
+   inline unsigned char* get_buffer() { return db_buffer; } 
+
+   inline void set_num_nodes(size_t n) { number_nodes = n; }
+   inline size_t get_num_nodes() { return number_nodes; }  
+    
    inline field_type get_priority_type(void) const { return priority_type; }
    inline strat_level get_priority_strat_level(void) const { return priority_strat_level; }
 	inline bool is_priority_asc(void) const { return priority_order == PRIORITY_ASC; }

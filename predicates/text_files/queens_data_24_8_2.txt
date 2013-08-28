@@ -1,0 +1,587 @@
+reading arguments......
+printing code : 
+generating program object......
+num_predicates : 13
+num_nodes : 64
+num_args : 0
+n_rules : 1
+rule 0 : init -o axioms
+num_strings : 0
+num_constants : 0
+const_code_size : 1
+predicate 0 : _init
+predicate 1 : set-priority
+predicate 2 : setcolor
+predicate 3 : setedgelabel
+predicate 4 : write-string
+predicate 5 : add-priority
+predicate 6 : schedule-next
+predicate 7 : setColor2
+predicate 8 : left
+predicate 9 : right
+predicate 10 : down
+predicate 11 : coord
+predicate 12 : receive-down
+rule : 0
+init -o axioms
+_init
+Not persistent
+RULE 0
+ITERATE OVER _init (d) MATCHING
+  SELECT BY NODE
+  0
+    NEW AXIOMS
+      right(@1)
+      left(@0)
+      down(@8)
+      coord(0, 0)
+      receive-down([], [])
+    RETURN SELECT 5
+  1
+    NEW AXIOMS
+      right(@2)
+      left(@0)
+      down(@9)
+      coord(0, 1)
+    RETURN SELECT 42
+  2
+    NEW AXIOMS
+      right(@3)
+      left(@1)
+      down(@10)
+      coord(0, 2)
+    RETURN SELECT 76
+  3
+    NEW AXIOMS
+      right(@4)
+      left(@2)
+      down(@11)
+      coord(0, 3)
+    RETURN SELECT 110
+  4
+    NEW AXIOMS
+      right(@5)
+      left(@3)
+      down(@12)
+      coord(0, 4)
+    RETURN SELECT 144
+  5
+    NEW AXIOMS
+      right(@6)
+      left(@4)
+      down(@13)
+      coord(0, 5)
+    RETURN SELECT 178
+  6
+    NEW AXIOMS
+      right(@7)
+      left(@5)
+      down(@14)
+      coord(0, 6)
+    RETURN SELECT 212
+  7
+    NEW AXIOMS
+      right(@7)
+      left(@6)
+      down(@15)
+      coord(0, 7)
+    RETURN SELECT 246
+  8
+    NEW AXIOMS
+      right(@9)
+      left(@8)
+      down(@16)
+      coord(1, 0)
+    RETURN SELECT 280
+  9
+    NEW AXIOMS
+      right(@10)
+      left(@8)
+      down(@17)
+      coord(1, 1)
+    RETURN SELECT 314
+  10
+    NEW AXIOMS
+      right(@11)
+      left(@9)
+      down(@18)
+      coord(1, 2)
+    RETURN SELECT 348
+  11
+    NEW AXIOMS
+      right(@12)
+      left(@10)
+      down(@19)
+      coord(1, 3)
+    RETURN SELECT 382
+  12
+    NEW AXIOMS
+      right(@13)
+      left(@11)
+      down(@20)
+      coord(1, 4)
+    RETURN SELECT 416
+  13
+    NEW AXIOMS
+      right(@14)
+      left(@12)
+      down(@21)
+      coord(1, 5)
+    RETURN SELECT 450
+  14
+    NEW AXIOMS
+      right(@15)
+      left(@13)
+      down(@22)
+      coord(1, 6)
+    RETURN SELECT 484
+  15
+    NEW AXIOMS
+      right(@15)
+      left(@14)
+      down(@23)
+      coord(1, 7)
+    RETURN SELECT 518
+  16
+    NEW AXIOMS
+      right(@17)
+      left(@16)
+      down(@24)
+      coord(2, 0)
+    RETURN SELECT 552
+  17
+    NEW AXIOMS
+      right(@18)
+      left(@16)
+      down(@25)
+      coord(2, 1)
+    RETURN SELECT 586
+  18
+    NEW AXIOMS
+      right(@19)
+      left(@17)
+      down(@26)
+      coord(2, 2)
+    RETURN SELECT 620
+  19
+    NEW AXIOMS
+      right(@20)
+      left(@18)
+      down(@27)
+      coord(2, 3)
+    RETURN SELECT 654
+  20
+    NEW AXIOMS
+      right(@21)
+      left(@19)
+      down(@28)
+      coord(2, 4)
+    RETURN SELECT 688
+  21
+    NEW AXIOMS
+      right(@22)
+      left(@20)
+      down(@29)
+      coord(2, 5)
+    RETURN SELECT 722
+  22
+    NEW AXIOMS
+      right(@23)
+      left(@21)
+      down(@30)
+      coord(2, 6)
+    RETURN SELECT 756
+  23
+    NEW AXIOMS
+      right(@23)
+      left(@22)
+      down(@31)
+      coord(2, 7)
+    RETURN SELECT 790
+  24
+    NEW AXIOMS
+      right(@25)
+      left(@24)
+      down(@32)
+      coord(3, 0)
+    RETURN SELECT 824
+  25
+    NEW AXIOMS
+      right(@26)
+      left(@24)
+      down(@33)
+      coord(3, 1)
+    RETURN SELECT 858
+  26
+    NEW AXIOMS
+      right(@27)
+      left(@25)
+      down(@34)
+      coord(3, 2)
+    RETURN SELECT 892
+  27
+    NEW AXIOMS
+      right(@28)
+      left(@26)
+      down(@35)
+      coord(3, 3)
+    RETURN SELECT 926
+  28
+    NEW AXIOMS
+      right(@29)
+      left(@27)
+      down(@36)
+      coord(3, 4)
+    RETURN SELECT 960
+  29
+    NEW AXIOMS
+      right(@30)
+      left(@28)
+      down(@37)
+      coord(3, 5)
+    RETURN SELECT 994
+  30
+    NEW AXIOMS
+      right(@31)
+      left(@29)
+      down(@38)
+      coord(3, 6)
+    RETURN SELECT 1028
+  31
+    NEW AXIOMS
+      right(@31)
+      left(@30)
+      down(@39)
+      coord(3, 7)
+    RETURN SELECT 1062
+  32
+    NEW AXIOMS
+      right(@33)
+      left(@32)
+      down(@40)
+      coord(4, 0)
+    RETURN SELECT 1096
+  33
+    NEW AXIOMS
+      right(@34)
+      left(@32)
+      down(@41)
+      coord(4, 1)
+    RETURN SELECT 1130
+  34
+    NEW AXIOMS
+      right(@35)
+      left(@33)
+      down(@42)
+      coord(4, 2)
+    RETURN SELECT 1164
+  35
+    NEW AXIOMS
+      right(@36)
+      left(@34)
+      down(@43)
+      coord(4, 3)
+    RETURN SELECT 1198
+  36
+    NEW AXIOMS
+      right(@37)
+      left(@35)
+      down(@44)
+      coord(4, 4)
+    RETURN SELECT 1232
+  37
+    NEW AXIOMS
+      right(@38)
+      left(@36)
+      down(@45)
+      coord(4, 5)
+    RETURN SELECT 1266
+  38
+    NEW AXIOMS
+      right(@39)
+      left(@37)
+      down(@46)
+      coord(4, 6)
+    RETURN SELECT 1300
+  39
+    NEW AXIOMS
+      right(@39)
+      left(@38)
+      down(@47)
+      coord(4, 7)
+    RETURN SELECT 1334
+  40
+    NEW AXIOMS
+      right(@41)
+      left(@40)
+      down(@48)
+      coord(5, 0)
+    RETURN SELECT 1368
+  41
+    NEW AXIOMS
+      right(@42)
+      left(@40)
+      down(@49)
+      coord(5, 1)
+    RETURN SELECT 1402
+  42
+    NEW AXIOMS
+      right(@43)
+      left(@41)
+      down(@50)
+      coord(5, 2)
+    RETURN SELECT 1436
+  43
+    NEW AXIOMS
+      right(@44)
+      left(@42)
+      down(@51)
+      coord(5, 3)
+    RETURN SELECT 1470
+  44
+    NEW AXIOMS
+      right(@45)
+      left(@43)
+      down(@52)
+      coord(5, 4)
+    RETURN SELECT 1504
+  45
+    NEW AXIOMS
+      right(@46)
+      left(@44)
+      down(@53)
+      coord(5, 5)
+    RETURN SELECT 1538
+  46
+    NEW AXIOMS
+      right(@47)
+      left(@45)
+      down(@54)
+      coord(5, 6)
+    RETURN SELECT 1572
+  47
+    NEW AXIOMS
+      right(@47)
+      left(@46)
+      down(@55)
+      coord(5, 7)
+    RETURN SELECT 1606
+  48
+    NEW AXIOMS
+      right(@49)
+      left(@48)
+      down(@56)
+      coord(6, 0)
+    RETURN SELECT 1640
+  49
+    NEW AXIOMS
+      right(@50)
+      left(@48)
+      down(@57)
+      coord(6, 1)
+    RETURN SELECT 1674
+  50
+    NEW AXIOMS
+      right(@51)
+      left(@49)
+      down(@58)
+      coord(6, 2)
+    RETURN SELECT 1708
+  51
+    NEW AXIOMS
+      right(@52)
+      left(@50)
+      down(@59)
+      coord(6, 3)
+    RETURN SELECT 1742
+  52
+    NEW AXIOMS
+      right(@53)
+      left(@51)
+      down(@60)
+      coord(6, 4)
+    RETURN SELECT 1776
+  53
+    NEW AXIOMS
+      right(@54)
+      left(@52)
+      down(@61)
+      coord(6, 5)
+    RETURN SELECT 1810
+  54
+    NEW AXIOMS
+      right(@55)
+      left(@53)
+      down(@62)
+      coord(6, 6)
+    RETURN SELECT 1844
+  55
+    NEW AXIOMS
+      right(@55)
+      left(@54)
+      down(@63)
+      coord(6, 7)
+    RETURN SELECT 1878
+  56
+    NEW AXIOMS
+      right(@57)
+      left(@56)
+      down(@56)
+      coord(7, 0)
+    RETURN SELECT 1912
+  57
+    NEW AXIOMS
+      right(@58)
+      left(@56)
+      down(@57)
+      coord(7, 1)
+    RETURN SELECT 1946
+  58
+    NEW AXIOMS
+      right(@59)
+      left(@57)
+      down(@58)
+      coord(7, 2)
+    RETURN SELECT 1980
+  59
+    NEW AXIOMS
+      right(@60)
+      left(@58)
+      down(@59)
+      coord(7, 3)
+    RETURN SELECT 2014
+  60
+    NEW AXIOMS
+      right(@61)
+      left(@59)
+      down(@60)
+      coord(7, 4)
+    RETURN SELECT 2048
+  61
+    NEW AXIOMS
+      right(@62)
+      left(@60)
+      down(@61)
+      coord(7, 5)
+    RETURN SELECT 2082
+  62
+    NEW AXIOMS
+      right(@63)
+      left(@61)
+      down(@62)
+      coord(7, 6)
+    RETURN SELECT 2116
+  63
+    NEW AXIOMS
+      right(@63)
+      left(@62)
+      down(@63)
+      coord(7, 7)
+    RETURN SELECT 2150
+  RULE DONE
+  MOVE tuple TO reg 0
+  REMOVE reg 0
+  MOVE PTR 0 TO reg 0
+  RETURN DERIVED
+  NEXT
+RETURN
+Rule depends on : 
+_init
+coord
+down
+left
+receive-down
+right
+
+predicate : 0
+_init
+affected rule : 0
+PROCESS _init (1):
+RETURN LINEAR
+END PROCESS;
+Predicate depends on : 
+
+predicate : 1
+set-priority
+PROCESS set-priority (1):
+RETURN
+END PROCESS;
+Predicate depends on : 
+
+predicate : 2
+setcolor
+PROCESS setcolor (1):
+RETURN
+END PROCESS;
+Predicate depends on : 
+
+predicate : 3
+setedgelabel
+PROCESS setedgelabel (1):
+RETURN
+END PROCESS;
+Predicate depends on : 
+
+predicate : 4
+write-string
+PROCESS write-string (1):
+RETURN
+END PROCESS;
+Predicate depends on : 
+
+predicate : 5
+add-priority
+PROCESS add-priority (1):
+RETURN
+END PROCESS;
+Predicate depends on : 
+
+predicate : 6
+schedule-next
+PROCESS schedule-next (1):
+RETURN
+END PROCESS;
+Predicate depends on : 
+
+predicate : 7
+setColor2
+PROCESS setColor2 (1):
+RETURN
+END PROCESS;
+Predicate depends on : 
+
+predicate : 8
+left
+PROCESS left (1):
+RETURN
+END PROCESS;
+Predicate depends on : 
+
+predicate : 9
+right
+PROCESS right (1):
+RETURN
+END PROCESS;
+Predicate depends on : 
+
+predicate : 10
+down
+PROCESS down (1):
+RETURN
+END PROCESS;
+Predicate depends on : 
+
+predicate : 11
+coord
+PROCESS coord (1):
+RETURN
+END PROCESS;
+Predicate depends on : 
+
+predicate : 12
+receive-down
+PROCESS receive-down (1):
+RETURN
+END PROCESS;
+Predicate depends on : 
+
