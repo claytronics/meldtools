@@ -1,0 +1,3 @@
+import linear f(node,int) as f_ from test_i.
+
+f_(@0,3).

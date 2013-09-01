@@ -26,6 +26,10 @@
     position += (SIZE);				\
 } while(false)
 
+#define READ_CODE_TMP(TO, SIZE) do { \
+    temp_in.read((char *)(TO), SIZE);	\
+} while(false)
+
 #define SEEK_CODE(SIZE) do { \
     infile_m.seekg(SIZE, ios_base::cur);	\
     position += (SIZE);	\
@@ -340,9 +344,7 @@ void linker(){
     num_rules_new = num_rules_new + secondary_list[i]->num_rules() - 1;
 
     }     
-
-
-    // minus 1 to exclude init    
+    
     num_common_predicates = (COMMON_PREDICATES) * secondary_list.size();
     
     const size_t num_predicates_new = num_predicates_orig + num_imported_predicates - num_common_predicates - primary->num_imported_predicates();
@@ -395,6 +397,7 @@ void linker(){
     position_prev = position;
 
     uint32_t number_imported_predicates;
+
     // read imported/exported predicates
     if(VERSION_AT_LEAST(0, 9)) {
 
@@ -587,11 +590,26 @@ void linker(){
     READ_CODE(const_code, const_code_size);
     delete const_code;
 
+    COPY_TO_OUTPUT(position_prev,position);
+    position_prev = position;
+
     if(VERSION_AT_LEAST(0, 6)) {
         // get function code
-        uint_val n_functions;
+        uint_val n_functions,n_functions_new;
 
         READ_CODE(&n_functions, sizeof(uint_val));
+        position_prev = position;
+
+        n_functions_new = 0;
+        for(size_t i(0); i < secondary_list.size(); i++){
+            n_functions_new = n_functions_new + secondary_list[i]->get_num_functions();
+        }
+
+        cout << "n_functions : " << n_functions << endl;
+        cout << "n_functions_new : " << n_functions_new << endl;
+
+        uint_val n_functions_total = n_functions + n_functions_new;
+        WRITE_CODE(&n_functions_total,sizeof(uint_val));
 
         for(size_t i(0); i < n_functions; ++i) {
             code_size_t fun_size;
@@ -602,15 +620,42 @@ void linker(){
             delete fun_code;
         }
 
+        COPY_TO_OUTPUT(position_prev,position);
+        position_prev = position;
+
+        for(size_t i(0); i < secondary_list.size(); i++){
+            for(size_t j(0); j < secondary_list[i]->get_num_functions(); j++){
+                code_size_t fun_size = secondary_list[i]->get_function(j)->get_bytecode_size();
+                WRITE_CODE(&fun_size, sizeof(code_size_t));
+                WRITE_CODE(secondary_list[i]->get_function(j)->get_bytecode(),fun_size);
+
+            }
+        }
+
         //init functions defined in external namespace
-        init_external_functions();
+        //        init_external_functions();
 
         if(maj > 0 || min >= 7) {
             // get external functions definitions
-            uint_val n_externs;
+            uint_val n_externs,n_externs_new;
 
             READ_CODE(&n_externs, sizeof(uint_val));
+            position_prev = position;
 
+            n_externs_new = 0;
+            for(size_t i(0); i < secondary_list.size(); i++){
+
+                n_externs_new = n_externs_new + secondary_list[i]->get_num_ext_functions();
+
+            }
+
+            cout << "n_externs : " << n_externs << endl;
+            cout << "n_externs_new : " << n_externs_new << endl;       
+
+            uint_val n_externs_total = n_externs + n_externs_new;
+            WRITE_CODE(&n_externs_total, sizeof(uint_val));
+
+            // primary
             for(size_t i(0); i < n_externs; ++i) {
 
                 uint_val extern_id;
@@ -632,7 +677,7 @@ void linker(){
                 if(file_name){
                     cout<<"external function : "<<extern_name<<" found !\n";
                     cout << "filename : "<<file_name<<endl;
-                    memcpy(skip_filename,table[1].file_name,strlen(file_name));
+                    memcpy(skip_filename,file_name,strlen(file_name));
                 } 
                 else{
                     cout<<"external function : "<<extern_name<<" not defined in .md file\n";
@@ -666,6 +711,80 @@ void linker(){
 
                 position_prev = position;
             }
+
+            //secondary
+            size_t new_extern_id = n_externs;        
+            for(size_t k(0) ; k < secondary_list.size() ; k++){
+
+                cout << "linking external functions" << endl;
+                cout << "Opening ..." << secondary_list[k]->get_name().c_str() << endl;
+
+                std::ifstream temp_in(secondary_list[k]->get_name().c_str(),std::ifstream::binary);
+                temp_in.seekg(secondary_list[k]->get_ext_function_position(), ios_base::beg);
+
+                for(size_t i(0); i < secondary_list[k]->get_num_ext_functions(); ++i) {
+
+                    uint_val extern_id;
+
+                    READ_CODE_TMP(&extern_id, sizeof(uint_val));
+                    cout << "old external id : " << extern_id << endl;
+                    cout << "new external id : " << new_extern_id << endl;
+
+                    WRITE_CODE(&new_extern_id,sizeof(uint_val));
+
+                    char extern_name[256];
+
+                    READ_CODE_TMP(extern_name, sizeof(extern_name));
+                    WRITE_CODE(extern_name, sizeof(extern_name));
+
+                    char skip_filename[1024];
+                    char *file_name = get_filename(extern_name,table,num_of_lines);
+
+                    READ_CODE_TMP(skip_filename, sizeof(skip_filename));
+
+                    cout<<"skip_filename : "<<skip_filename<<endl;
+
+                    if(file_name){
+                        cout<<"external function : "<<extern_name<<" found !\n";
+                        cout << "filename : "<<file_name<<endl;
+                        memcpy(skip_filename,file_name,strlen(file_name));
+                    } 
+                    else{
+                        cout<<"external function : "<<extern_name<<" not defined in .md file\n";
+                        memcpy(skip_filename,dummy_path,sizeof(dummy_path));
+                    }
+
+                    WRITE_CODE(skip_filename,sizeof(skip_filename));
+
+                    ptr_val skip_ptr;
+
+                    READ_CODE_TMP(&skip_ptr, sizeof(skip_ptr));
+                    WRITE_CODE(&skip_ptr,sizeof(skip_ptr));
+
+                    uint_val num_args;
+
+                    READ_CODE_TMP(&num_args, sizeof(num_args));
+                    WRITE_CODE(&num_args,sizeof(num_args));
+
+                    cout << "Id : " << new_extern_id << " Name :" << extern_name << endl;
+                    cout<<"Num args : "<<num_args<<endl;
+                    new_extern_id++;    
+
+                    for(uint_val j(0); j != num_args + 1; ++j) {
+                        byte b;
+                        READ_CODE_TMP(&b, sizeof(byte));
+                        WRITE_CODE(&b,sizeof(byte));
+
+                        field_type type = (field_type)b;
+                        cout << field_type_string_(type) << ", ";
+                    }
+                    cout << endl;
+
+                }
+
+                temp_in.close();
+            }
+
         }
     }
 

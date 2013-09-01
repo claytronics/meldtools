@@ -249,6 +249,10 @@ program::program(const string& _filename):
 
          READ_CODE(&n_externs, sizeof(uint_val));
 
+         // linker
+         set_num_ext_functions(n_externs);
+         set_ext_function_position(position);
+
          for(size_t i(0); i < n_externs; ++i) {
             uint_val extern_id;
 

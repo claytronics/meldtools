@@ -1,0 +1,9 @@
+type linear f(node, int).
+type linear g(node, int). 
+
+export f.
+
+extern int inta(int,int,int).
+extern int intb(int).
+ 
+f(A, N) -o g(A, inta(N,N,N) + intb(N) + intpower(N,2)).

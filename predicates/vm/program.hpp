@@ -58,7 +58,9 @@ private:
 	size_t num_args;
    size_t number_rules;
    size_t number_nodes;
-    
+   size_t number_ext_functions;    
+
+   size_t external_function_position; 
    unsigned char* db_buffer;
 
    std::vector<rule*> rules;
@@ -129,6 +131,14 @@ public:
 
    inline void set_num_nodes(size_t n) { number_nodes = n; }
    inline size_t get_num_nodes() { return number_nodes; }  
+
+   inline void set_num_ext_functions(size_t n) { number_ext_functions = n; }
+   inline size_t get_num_ext_functions() { return number_ext_functions; }  
+   inline void set_ext_function_position(size_t n) { external_function_position = n; }
+   inline size_t get_ext_function_position() { return external_function_position; } 
+
+
+   inline size_t get_num_functions() { return functions.size(); } 
     
    inline field_type get_priority_type(void) const { return priority_type; }
    inline strat_level get_priority_strat_level(void) const { return priority_strat_level; }

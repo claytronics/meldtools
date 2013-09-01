@@ -24,3 +24,10 @@
 (cl-meld:meld-compile "/home/rupesh/blinkybot/tools_meld/meldtools/predicates/file4.meld" "/home/rupesh/blinkybot/tools_meld/meldtools/predicates/file4")
 
 (cl-meld:meld-compile "/home/rupesh/blinkybot/programs_meld/programs/quicksort/quicksort_.meld" "/home/rupesh/blinkybot/programs_meld/programs/quicksort/quicksort")
+
+
+(cl-meld:meld-compile "/home/rupesh/blinkybot/tools_meld/meldtools/predicates/test.meld" "/home/rupesh/blinkybot/tools_meld/meldtools/predicates/test")
+
+(cl-meld:meld-compile "/home/rupesh/blinkybot/tools_meld/meldtools/predicates/test_i.meld" "/home/rupesh/blinkybot/tools_meld/meldtools/predicates/test_i")
+
+(cl-meld:meld-compile "/home/rupesh/blinkybot/tools_meld/meldtools/predicates/test2.meld" "/home/rupesh/blinkybot/tools_meld/meldtools/predicates/test2")
