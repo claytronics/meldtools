@@ -1,0 +1,1221 @@
+reading arguments......
+printing code : 
+generating program object......
+num_predicates : 21
+num_nodes : 64
+import receive-down_ as receive-down from t2
+import coord_ as coord from t2
+import down_ as down from t2
+import right_ as right from t2
+import left_ as left from t2
+num_args : 0
+n_rules : 16
+rule 0 : init -o axioms
+rule 1 : receive-down_(Nodes, Coords) -o test-and-send-down(Nodes, Coords), {R | !right_(R), 
+			R != host-id | propagate-right(Nodes, Coords)}, {L | !left_(L), 
+			L != host-id | propagate-left(Nodes, Coords)}.
+rule 2 : propagate-left(Nodes, Coords) -o test-and-send-down(Nodes, Coords), {L | !left_(L), 
+			L != host-id | propagate-left(Nodes, Coords)}.
+rule 3 : propagate-right(Nodes, Coords) -o test-and-send-down(Nodes, Coords), {R | !right_(R), 
+			R != host-id | propagate-right(Nodes, Coords)}.
+rule 4 : test-and-send-down(Nodes, Coords), !coord_(X, Y) -o test-y(Y, Coords, Nodes, Coords).
+rule 5 : test-y(Y, MV2, Nodes, Coords), !coord_(OX, OY), MV2 = nil -o test-diag-left(OX - 1, OY - 1, Coords, Nodes, Coords).
+rule 6 : test-y(Y, MV3, Nodes, Coords), MV4 = tail(MV3), Y1 = head(MV4), Y = Y1, 
+			not(test-nil(MV3)), not(test-nil(MV4)) -o 1.
+rule 7 : test-y(Y, MV6, Nodes, Coords), MV7 = tail(MV6), Y1 = head(MV7), RestCoords = tail(MV7), 
+			Y != Y1, not(test-nil(MV6)), not(test-nil(MV7)) -o test-y(Y, RestCoords, Nodes, Coords).
+rule 8 : test-diag-left(X, Y, MV1, Nodes, Coords), !coord_(OX, OY), (X < 0) NIL (Y < 0) -o test-diag-right(OX - 1, OY + 1, Coords, Nodes, Coords).
+rule 9 : test-diag-left(X, Y, MV9, Nodes, Coords), X1 = head(MV9), MV10 = tail(MV9), Y1 = head(MV10), 
+			X = X1, Y = Y1, not(test-nil(MV9)), not(test-nil(MV10)) -o 1.
+rule 10 : test-diag-left(X, Y, MV12, Nodes, Coords), X1 = head(MV12), MV13 = tail(MV12), Y1 = head(MV13), 
+			RestCoords = tail(MV13), (X != X1) NIL (Y != Y1), not(test-nil(MV12)), not(test-nil(MV13)) -o test-diag-left(X - 1, Y - 1, RestCoords, Nodes, Coords).
+rule 11 : test-diag-right(X, Y, MV15, Nodes, Coords), !coord_(OX, OY), (X < 0) NIL (Y >= 8), MV15 = nil -o 
+			send-down(cons(host-id,Nodes), cons(OX,cons(OY,Coords))).
+rule 12 : test-diag-right(X, Y, MV16, Nodes, Coords), X1 = head(MV16), MV17 = tail(MV16), Y1 = head(MV17), 
+			X = X1, Y = Y1, not(test-nil(MV16)), not(test-nil(MV17)) -o 1.
+rule 13 : test-diag-right(X, Y, MV19, Nodes, Coords), X1 = head(MV19), MV20 = tail(MV19), Y1 = head(MV20), 
+			RestCoords = tail(MV20), (X != X1) NIL (Y != Y1), not(test-nil(MV19)), not(test-nil(MV20)) -o test-diag-right(X - 1, Y + 1, RestCoords, Nodes, Coords).
+rule 14 : send-down(Nodes, Coords), !down_(A), A = host-id -o final-state(Nodes, Coords).
+rule 15 : send-down(Nodes, Coords), !down_(B), host-id != B -o receive-down_(Nodes, Coords).
+num_strings : 0
+num_constants : 0
+const_code_size : 1
+predicate 0 : _init
+predicate 1 : set-priority
+predicate 2 : setcolor
+predicate 3 : setedgelabel
+predicate 4 : write-string
+predicate 5 : add-priority
+predicate 6 : schedule-next
+predicate 7 : setColor2
+predicate 8 : propagate-left.t2.m
+predicate 9 : propagate-right.t2.m
+predicate 10 : test-and-send-down.t2.m
+predicate 11 : test-y.t2.m
+predicate 12 : test-diag-left.t2.m
+predicate 13 : test-diag-right.t2.m
+predicate 14 : send-down.t2.m
+predicate 15 : final-state.t2.m
+predicate 16 : left_.t2.m
+predicate 17 : right_.t2.m
+predicate 18 : down_.t2.m
+predicate 19 : coord_.t2.m
+predicate 20 : receive-down_.t2.m
+rule : 0
+init -o axioms
+_init
+Not persistent
+RULE 0
+ITERATE OVER _init (d) MATCHING
+  SELECT BY NODE
+  0
+    NEW AXIOMS
+      right_.t2.m(@1)
+      left_.t2.m(@0)
+      down_.t2.m(@8)
+      coord_.t2.m(0, 0)
+      receive-down_.t2.m([], [])
+    RETURN SELECT 5
+  1
+    NEW AXIOMS
+      right_.t2.m(@2)
+      left_.t2.m(@0)
+      down_.t2.m(@9)
+      coord_.t2.m(0, 1)
+    RETURN SELECT 42
+  2
+    NEW AXIOMS
+      right_.t2.m(@3)
+      left_.t2.m(@1)
+      down_.t2.m(@10)
+      coord_.t2.m(0, 2)
+    RETURN SELECT 76
+  3
+    NEW AXIOMS
+      right_.t2.m(@4)
+      left_.t2.m(@2)
+      down_.t2.m(@11)
+      coord_.t2.m(0, 3)
+    RETURN SELECT 110
+  4
+    NEW AXIOMS
+      right_.t2.m(@5)
+      left_.t2.m(@3)
+      down_.t2.m(@12)
+      coord_.t2.m(0, 4)
+    RETURN SELECT 144
+  5
+    NEW AXIOMS
+      right_.t2.m(@6)
+      left_.t2.m(@4)
+      down_.t2.m(@13)
+      coord_.t2.m(0, 5)
+    RETURN SELECT 178
+  6
+    NEW AXIOMS
+      right_.t2.m(@7)
+      left_.t2.m(@5)
+      down_.t2.m(@14)
+      coord_.t2.m(0, 6)
+    RETURN SELECT 212
+  7
+    NEW AXIOMS
+      right_.t2.m(@7)
+      left_.t2.m(@6)
+      down_.t2.m(@15)
+      coord_.t2.m(0, 7)
+    RETURN SELECT 246
+  8
+    NEW AXIOMS
+      right_.t2.m(@9)
+      left_.t2.m(@8)
+      down_.t2.m(@16)
+      coord_.t2.m(1, 0)
+    RETURN SELECT 280
+  9
+    NEW AXIOMS
+      right_.t2.m(@10)
+      left_.t2.m(@8)
+      down_.t2.m(@17)
+      coord_.t2.m(1, 1)
+    RETURN SELECT 314
+  10
+    NEW AXIOMS
+      right_.t2.m(@11)
+      left_.t2.m(@9)
+      down_.t2.m(@18)
+      coord_.t2.m(1, 2)
+    RETURN SELECT 348
+  11
+    NEW AXIOMS
+      right_.t2.m(@12)
+      left_.t2.m(@10)
+      down_.t2.m(@19)
+      coord_.t2.m(1, 3)
+    RETURN SELECT 382
+  12
+    NEW AXIOMS
+      right_.t2.m(@13)
+      left_.t2.m(@11)
+      down_.t2.m(@20)
+      coord_.t2.m(1, 4)
+    RETURN SELECT 416
+  13
+    NEW AXIOMS
+      right_.t2.m(@14)
+      left_.t2.m(@12)
+      down_.t2.m(@21)
+      coord_.t2.m(1, 5)
+    RETURN SELECT 450
+  14
+    NEW AXIOMS
+      right_.t2.m(@15)
+      left_.t2.m(@13)
+      down_.t2.m(@22)
+      coord_.t2.m(1, 6)
+    RETURN SELECT 484
+  15
+    NEW AXIOMS
+      right_.t2.m(@15)
+      left_.t2.m(@14)
+      down_.t2.m(@23)
+      coord_.t2.m(1, 7)
+    RETURN SELECT 518
+  16
+    NEW AXIOMS
+      right_.t2.m(@17)
+      left_.t2.m(@16)
+      down_.t2.m(@24)
+      coord_.t2.m(2, 0)
+    RETURN SELECT 552
+  17
+    NEW AXIOMS
+      right_.t2.m(@18)
+      left_.t2.m(@16)
+      down_.t2.m(@25)
+      coord_.t2.m(2, 1)
+    RETURN SELECT 586
+  18
+    NEW AXIOMS
+      right_.t2.m(@19)
+      left_.t2.m(@17)
+      down_.t2.m(@26)
+      coord_.t2.m(2, 2)
+    RETURN SELECT 620
+  19
+    NEW AXIOMS
+      right_.t2.m(@20)
+      left_.t2.m(@18)
+      down_.t2.m(@27)
+      coord_.t2.m(2, 3)
+    RETURN SELECT 654
+  20
+    NEW AXIOMS
+      right_.t2.m(@21)
+      left_.t2.m(@19)
+      down_.t2.m(@28)
+      coord_.t2.m(2, 4)
+    RETURN SELECT 688
+  21
+    NEW AXIOMS
+      right_.t2.m(@22)
+      left_.t2.m(@20)
+      down_.t2.m(@29)
+      coord_.t2.m(2, 5)
+    RETURN SELECT 722
+  22
+    NEW AXIOMS
+      right_.t2.m(@23)
+      left_.t2.m(@21)
+      down_.t2.m(@30)
+      coord_.t2.m(2, 6)
+    RETURN SELECT 756
+  23
+    NEW AXIOMS
+      right_.t2.m(@23)
+      left_.t2.m(@22)
+      down_.t2.m(@31)
+      coord_.t2.m(2, 7)
+    RETURN SELECT 790
+  24
+    NEW AXIOMS
+      right_.t2.m(@25)
+      left_.t2.m(@24)
+      down_.t2.m(@32)
+      coord_.t2.m(3, 0)
+    RETURN SELECT 824
+  25
+    NEW AXIOMS
+      right_.t2.m(@26)
+      left_.t2.m(@24)
+      down_.t2.m(@33)
+      coord_.t2.m(3, 1)
+    RETURN SELECT 858
+  26
+    NEW AXIOMS
+      right_.t2.m(@27)
+      left_.t2.m(@25)
+      down_.t2.m(@34)
+      coord_.t2.m(3, 2)
+    RETURN SELECT 892
+  27
+    NEW AXIOMS
+      right_.t2.m(@28)
+      left_.t2.m(@26)
+      down_.t2.m(@35)
+      coord_.t2.m(3, 3)
+    RETURN SELECT 926
+  28
+    NEW AXIOMS
+      right_.t2.m(@29)
+      left_.t2.m(@27)
+      down_.t2.m(@36)
+      coord_.t2.m(3, 4)
+    RETURN SELECT 960
+  29
+    NEW AXIOMS
+      right_.t2.m(@30)
+      left_.t2.m(@28)
+      down_.t2.m(@37)
+      coord_.t2.m(3, 5)
+    RETURN SELECT 994
+  30
+    NEW AXIOMS
+      right_.t2.m(@31)
+      left_.t2.m(@29)
+      down_.t2.m(@38)
+      coord_.t2.m(3, 6)
+    RETURN SELECT 1028
+  31
+    NEW AXIOMS
+      right_.t2.m(@31)
+      left_.t2.m(@30)
+      down_.t2.m(@39)
+      coord_.t2.m(3, 7)
+    RETURN SELECT 1062
+  32
+    NEW AXIOMS
+      right_.t2.m(@33)
+      left_.t2.m(@32)
+      down_.t2.m(@40)
+      coord_.t2.m(4, 0)
+    RETURN SELECT 1096
+  33
+    NEW AXIOMS
+      right_.t2.m(@34)
+      left_.t2.m(@32)
+      down_.t2.m(@41)
+      coord_.t2.m(4, 1)
+    RETURN SELECT 1130
+  34
+    NEW AXIOMS
+      right_.t2.m(@35)
+      left_.t2.m(@33)
+      down_.t2.m(@42)
+      coord_.t2.m(4, 2)
+    RETURN SELECT 1164
+  35
+    NEW AXIOMS
+      right_.t2.m(@36)
+      left_.t2.m(@34)
+      down_.t2.m(@43)
+      coord_.t2.m(4, 3)
+    RETURN SELECT 1198
+  36
+    NEW AXIOMS
+      right_.t2.m(@37)
+      left_.t2.m(@35)
+      down_.t2.m(@44)
+      coord_.t2.m(4, 4)
+    RETURN SELECT 1232
+  37
+    NEW AXIOMS
+      right_.t2.m(@38)
+      left_.t2.m(@36)
+      down_.t2.m(@45)
+      coord_.t2.m(4, 5)
+    RETURN SELECT 1266
+  38
+    NEW AXIOMS
+      right_.t2.m(@39)
+      left_.t2.m(@37)
+      down_.t2.m(@46)
+      coord_.t2.m(4, 6)
+    RETURN SELECT 1300
+  39
+    NEW AXIOMS
+      right_.t2.m(@39)
+      left_.t2.m(@38)
+      down_.t2.m(@47)
+      coord_.t2.m(4, 7)
+    RETURN SELECT 1334
+  40
+    NEW AXIOMS
+      right_.t2.m(@41)
+      left_.t2.m(@40)
+      down_.t2.m(@48)
+      coord_.t2.m(5, 0)
+    RETURN SELECT 1368
+  41
+    NEW AXIOMS
+      right_.t2.m(@42)
+      left_.t2.m(@40)
+      down_.t2.m(@49)
+      coord_.t2.m(5, 1)
+    RETURN SELECT 1402
+  42
+    NEW AXIOMS
+      right_.t2.m(@43)
+      left_.t2.m(@41)
+      down_.t2.m(@50)
+      coord_.t2.m(5, 2)
+    RETURN SELECT 1436
+  43
+    NEW AXIOMS
+      right_.t2.m(@44)
+      left_.t2.m(@42)
+      down_.t2.m(@51)
+      coord_.t2.m(5, 3)
+    RETURN SELECT 1470
+  44
+    NEW AXIOMS
+      right_.t2.m(@45)
+      left_.t2.m(@43)
+      down_.t2.m(@52)
+      coord_.t2.m(5, 4)
+    RETURN SELECT 1504
+  45
+    NEW AXIOMS
+      right_.t2.m(@46)
+      left_.t2.m(@44)
+      down_.t2.m(@53)
+      coord_.t2.m(5, 5)
+    RETURN SELECT 1538
+  46
+    NEW AXIOMS
+      right_.t2.m(@47)
+      left_.t2.m(@45)
+      down_.t2.m(@54)
+      coord_.t2.m(5, 6)
+    RETURN SELECT 1572
+  47
+    NEW AXIOMS
+      right_.t2.m(@47)
+      left_.t2.m(@46)
+      down_.t2.m(@55)
+      coord_.t2.m(5, 7)
+    RETURN SELECT 1606
+  48
+    NEW AXIOMS
+      right_.t2.m(@49)
+      left_.t2.m(@48)
+      down_.t2.m(@56)
+      coord_.t2.m(6, 0)
+    RETURN SELECT 1640
+  49
+    NEW AXIOMS
+      right_.t2.m(@50)
+      left_.t2.m(@48)
+      down_.t2.m(@57)
+      coord_.t2.m(6, 1)
+    RETURN SELECT 1674
+  50
+    NEW AXIOMS
+      right_.t2.m(@51)
+      left_.t2.m(@49)
+      down_.t2.m(@58)
+      coord_.t2.m(6, 2)
+    RETURN SELECT 1708
+  51
+    NEW AXIOMS
+      right_.t2.m(@52)
+      left_.t2.m(@50)
+      down_.t2.m(@59)
+      coord_.t2.m(6, 3)
+    RETURN SELECT 1742
+  52
+    NEW AXIOMS
+      right_.t2.m(@53)
+      left_.t2.m(@51)
+      down_.t2.m(@60)
+      coord_.t2.m(6, 4)
+    RETURN SELECT 1776
+  53
+    NEW AXIOMS
+      right_.t2.m(@54)
+      left_.t2.m(@52)
+      down_.t2.m(@61)
+      coord_.t2.m(6, 5)
+    RETURN SELECT 1810
+  54
+    NEW AXIOMS
+      right_.t2.m(@55)
+      left_.t2.m(@53)
+      down_.t2.m(@62)
+      coord_.t2.m(6, 6)
+    RETURN SELECT 1844
+  55
+    NEW AXIOMS
+      right_.t2.m(@55)
+      left_.t2.m(@54)
+      down_.t2.m(@63)
+      coord_.t2.m(6, 7)
+    RETURN SELECT 1878
+  56
+    NEW AXIOMS
+      right_.t2.m(@57)
+      left_.t2.m(@56)
+      down_.t2.m(@56)
+      coord_.t2.m(7, 0)
+    RETURN SELECT 1912
+  57
+    NEW AXIOMS
+      right_.t2.m(@58)
+      left_.t2.m(@56)
+      down_.t2.m(@57)
+      coord_.t2.m(7, 1)
+    RETURN SELECT 1946
+  58
+    NEW AXIOMS
+      right_.t2.m(@59)
+      left_.t2.m(@57)
+      down_.t2.m(@58)
+      coord_.t2.m(7, 2)
+    RETURN SELECT 1980
+  59
+    NEW AXIOMS
+      right_.t2.m(@60)
+      left_.t2.m(@58)
+      down_.t2.m(@59)
+      coord_.t2.m(7, 3)
+    RETURN SELECT 2014
+  60
+    NEW AXIOMS
+      right_.t2.m(@61)
+      left_.t2.m(@59)
+      down_.t2.m(@60)
+      coord_.t2.m(7, 4)
+    RETURN SELECT 2048
+  61
+    NEW AXIOMS
+      right_.t2.m(@62)
+      left_.t2.m(@60)
+      down_.t2.m(@61)
+      coord_.t2.m(7, 5)
+    RETURN SELECT 2082
+  62
+    NEW AXIOMS
+      right_.t2.m(@63)
+      left_.t2.m(@61)
+      down_.t2.m(@62)
+      coord_.t2.m(7, 6)
+    RETURN SELECT 2116
+  63
+    NEW AXIOMS
+      right_.t2.m(@63)
+      left_.t2.m(@62)
+      down_.t2.m(@63)
+      coord_.t2.m(7, 7)
+    RETURN SELECT 2150
+  RULE DONE
+  MOVE tuple TO reg 0
+  REMOVE reg 0
+  MOVE PTR 0 TO reg 0
+  RETURN DERIVED
+  NEXT
+RETURN
+Rule depends on : 
+_init
+coord_.t2.m
+down_.t2.m
+left_.t2.m
+receive-down_.t2.m
+right_.t2.m
+
+rule : 1
+receive-down_(Nodes, Coords) -o test-and-send-down(Nodes, Coords), {R | !right_(R), 
+			R != host-id | propagate-right(Nodes, Coords)}, {L | !left_(L), 
+			L != host-id | propagate-left(Nodes, Coords)}.
+receive-down_.t2.m
+Not persistent
+RULE 1
+ITERATE OVER receive-down_.t2.m (d) MATCHING
+  MOVE tuple TO reg 0
+  RULE DONE
+  ALLOC test-and-send-down.t2.m TO reg 1
+  MOVE 0.0 TO 1.0
+  MOVE 0.1 TO 1.1
+  SEND reg 1 TO reg 1
+  RESET LINEAR
+    ITERATE OVER right_.t2.m () MATCHING
+      MOVE tuple TO reg 1
+      OP 1.0 ADDR NOT EQUAL host TO reg 2
+      IF (reg 2) THEN
+        ALLOC propagate-right.t2.m TO reg 2
+        MOVE 0.0 TO 2.0
+        MOVE 0.1 TO 2.1
+        SEND reg 2 TO reg 2
+        RETURN DERIVED
+      ENDIF
+      NEXT
+    END LINEAR
+  RESET LINEAR
+    ITERATE OVER left_.t2.m () MATCHING
+      MOVE tuple TO reg 1
+      OP 1.0 ADDR NOT EQUAL host TO reg 2
+      IF (reg 2) THEN
+        ALLOC propagate-left.t2.m TO reg 2
+        MOVE 0.0 TO 2.0
+        MOVE 0.1 TO 2.1
+        SEND reg 2 TO reg 2
+        RETURN DERIVED
+      ENDIF
+      NEXT
+    END LINEAR
+  REMOVE reg 0
+  RETURN DERIVED
+  NEXT
+RETURN
+Rule depends on : 
+left_.t2.m
+propagate-left.t2.m
+propagate-right.t2.m
+receive-down_.t2.m
+right_.t2.m
+test-and-send-down.t2.m
+
+rule : 2
+propagate-left(Nodes, Coords) -o test-and-send-down(Nodes, Coords), {L | !left_(L), 
+			L != host-id | propagate-left(Nodes, Coords)}.
+propagate-left.t2.m
+Not persistent
+RULE 2
+ITERATE OVER propagate-left.t2.m (d) MATCHING
+  MOVE tuple TO reg 0
+  RULE DONE
+  ALLOC test-and-send-down.t2.m TO reg 1
+  MOVE 0.0 TO 1.0
+  MOVE 0.1 TO 1.1
+  SEND reg 1 TO reg 1
+  RESET LINEAR
+    ITERATE OVER left_.t2.m () MATCHING
+      MOVE tuple TO reg 1
+      OP 1.0 ADDR NOT EQUAL host TO reg 2
+      IF (reg 2) THEN
+        ALLOC propagate-left.t2.m TO reg 2
+        MOVE 0.0 TO 2.0
+        MOVE 0.1 TO 2.1
+        SEND reg 2 TO reg 2
+        RETURN DERIVED
+      ENDIF
+      NEXT
+    END LINEAR
+  REMOVE reg 0
+  RETURN DERIVED
+  NEXT
+RETURN
+Rule depends on : 
+left_.t2.m
+propagate-left.t2.m
+test-and-send-down.t2.m
+
+rule : 3
+propagate-right(Nodes, Coords) -o test-and-send-down(Nodes, Coords), {R | !right_(R), 
+			R != host-id | propagate-right(Nodes, Coords)}.
+propagate-right.t2.m
+Not persistent
+RULE 3
+ITERATE OVER propagate-right.t2.m (d) MATCHING
+  MOVE tuple TO reg 0
+  RULE DONE
+  ALLOC test-and-send-down.t2.m TO reg 1
+  MOVE 0.0 TO 1.0
+  MOVE 0.1 TO 1.1
+  SEND reg 1 TO reg 1
+  RESET LINEAR
+    ITERATE OVER right_.t2.m () MATCHING
+      MOVE tuple TO reg 1
+      OP 1.0 ADDR NOT EQUAL host TO reg 2
+      IF (reg 2) THEN
+        ALLOC propagate-right.t2.m TO reg 2
+        MOVE 0.0 TO 2.0
+        MOVE 0.1 TO 2.1
+        SEND reg 2 TO reg 2
+        RETURN DERIVED
+      ENDIF
+      NEXT
+    END LINEAR
+  REMOVE reg 0
+  RETURN DERIVED
+  NEXT
+RETURN
+Rule depends on : 
+propagate-right.t2.m
+right_.t2.m
+test-and-send-down.t2.m
+
+rule : 4
+test-and-send-down(Nodes, Coords), !coord_(X, Y) -o test-y(Y, Coords, Nodes, Coords).
+coord_.t2.m
+test-and-send-down.t2.m
+Not persistent
+RULE 4
+ITERATE OVER test-and-send-down.t2.m (d) MATCHING
+  MOVE tuple TO reg 0
+  ITERATE OVER coord_.t2.m () MATCHING
+    MOVE tuple TO reg 1
+    RULE DONE
+    ALLOC test-y.t2.m TO reg 2
+    MOVE 1.1 TO 2.0
+    MOVE 0.1 TO 2.1
+    MOVE 0.0 TO 2.2
+    MOVE 0.1 TO 2.3
+    SEND reg 2 TO reg 2
+    REMOVE reg 0
+    RETURN DERIVED
+    NEXT
+  NEXT
+RETURN
+Rule depends on : 
+coord_.t2.m
+test-and-send-down.t2.m
+test-y.t2.m
+
+rule : 5
+test-y(Y, MV2, Nodes, Coords), !coord_(OX, OY), MV2 = nil -o test-diag-left(OX - 1, OY - 1, Coords, Nodes, Coords).
+coord_.t2.m
+test-y.t2.m
+Not persistent
+RULE 5
+ITERATE OVER test-y.t2.m (d) MATCHING
+  MOVE tuple TO reg 0
+  TEST-NIL 0.1 TO reg 1
+  IF (reg 1) THEN
+    ITERATE OVER coord_.t2.m () MATCHING
+      MOVE tuple TO reg 1
+      RULE DONE
+      ALLOC test-diag-left.t2.m TO reg 2
+      OP 1.0 INT MINUS INT 1 TO 2.0
+      OP 1.1 INT MINUS INT 1 TO 2.1
+      MOVE 0.3 TO 2.2
+      MOVE 0.2 TO 2.3
+      MOVE 0.3 TO 2.4
+      SEND reg 2 TO reg 2
+      REMOVE reg 0
+      RETURN DERIVED
+      NEXT
+  ENDIF
+  NEXT
+RETURN
+Rule depends on : 
+coord_.t2.m
+test-diag-left.t2.m
+test-y.t2.m
+
+rule : 6
+test-y(Y, MV3, Nodes, Coords), MV4 = tail(MV3), Y1 = head(MV4), Y = Y1, 
+			not(test-nil(MV3)), not(test-nil(MV4)) -o 1.
+test-y.t2.m
+Not persistent
+RULE 6
+ITERATE OVER test-y.t2.m (d) MATCHING
+  MOVE tuple TO reg 0
+  TEST-NIL 0.1 TO reg 1
+  NOT reg 1 TO reg 2
+  IF (reg 2) THEN
+    TAIL 0.1 TO reg 1
+    TEST-NIL reg 1 TO reg 2
+    NOT reg 2 TO reg 3
+    IF (reg 3) THEN
+      HEAD reg 1 TO reg 2
+      OP 0.0 INT EQUAL reg 2 TO reg 3
+      IF (reg 3) THEN
+        RULE DONE
+        REMOVE reg 0
+        RETURN DERIVED
+      ENDIF
+    ENDIF
+  ENDIF
+  NEXT
+RETURN
+Rule depends on : 
+test-y.t2.m
+
+rule : 7
+test-y(Y, MV6, Nodes, Coords), MV7 = tail(MV6), Y1 = head(MV7), RestCoords = tail(MV7), 
+			Y != Y1, not(test-nil(MV6)), not(test-nil(MV7)) -o test-y(Y, RestCoords, Nodes, Coords).
+test-y.t2.m
+Not persistent
+RULE 7
+ITERATE OVER test-y.t2.m (d) MATCHING
+  MOVE tuple TO reg 0
+  TEST-NIL 0.1 TO reg 1
+  NOT reg 1 TO reg 2
+  IF (reg 2) THEN
+    TAIL 0.1 TO reg 1
+    TEST-NIL reg 1 TO reg 2
+    NOT reg 2 TO reg 3
+    IF (reg 3) THEN
+      HEAD reg 1 TO reg 2
+      OP 0.0 INT NOT EQUAL reg 2 TO reg 3
+      IF (reg 3) THEN
+        RULE DONE
+        TAIL 0.1 TO reg 1
+        TAIL reg 1 TO reg 2
+        ALLOC test-y.t2.m TO reg 3
+        MOVE 0.0 TO 3.0
+        MOVE reg 2 TO 3.1
+        MOVE 0.2 TO 3.2
+        MOVE 0.3 TO 3.3
+        SEND reg 3 TO reg 3
+        REMOVE reg 0
+        RETURN DERIVED
+      ENDIF
+    ENDIF
+  ENDIF
+  NEXT
+RETURN
+Rule depends on : 
+test-y.t2.m
+
+rule : 8
+test-diag-left(X, Y, MV1, Nodes, Coords), !coord_(OX, OY), (X < 0) NIL (Y < 0) -o test-diag-right(OX - 1, OY + 1, Coords, Nodes, Coords).
+coord_.t2.m
+test-diag-left.t2.m
+Not persistent
+RULE 8
+ITERATE OVER test-diag-left.t2.m (d) MATCHING
+  MOVE tuple TO reg 0
+  OP 0.0 INT LESSER INT 0 TO reg 1
+  OP 0.1 INT LESSER INT 0 TO reg 2
+  OP reg 1 BOOL OR reg 2 TO reg 3
+  IF (reg 3) THEN
+    ITERATE OVER coord_.t2.m () MATCHING
+      MOVE tuple TO reg 1
+      RULE DONE
+      ALLOC test-diag-right.t2.m TO reg 2
+      OP 1.0 INT MINUS INT 1 TO 2.0
+      OP 1.1 INT PLUS INT 1 TO 2.1
+      MOVE 0.4 TO 2.2
+      MOVE 0.3 TO 2.3
+      MOVE 0.4 TO 2.4
+      SEND reg 2 TO reg 2
+      REMOVE reg 0
+      RETURN DERIVED
+      NEXT
+  ENDIF
+  NEXT
+RETURN
+Rule depends on : 
+coord_.t2.m
+test-diag-left.t2.m
+test-diag-right.t2.m
+
+rule : 9
+test-diag-left(X, Y, MV9, Nodes, Coords), X1 = head(MV9), MV10 = tail(MV9), Y1 = head(MV10), 
+			X = X1, Y = Y1, not(test-nil(MV9)), not(test-nil(MV10)) -o 1.
+test-diag-left.t2.m
+Not persistent
+RULE 9
+ITERATE OVER test-diag-left.t2.m (d) MATCHING
+  MOVE tuple TO reg 0
+  TEST-NIL 0.2 TO reg 1
+  NOT reg 1 TO reg 2
+  IF (reg 2) THEN
+    TAIL 0.2 TO reg 1
+    TEST-NIL reg 1 TO reg 2
+    NOT reg 2 TO reg 3
+    IF (reg 3) THEN
+      HEAD reg 1 TO reg 2
+      OP 0.1 INT EQUAL reg 2 TO reg 3
+      IF (reg 3) THEN
+        HEAD 0.2 TO reg 3
+        OP 0.0 INT EQUAL reg 3 TO reg 4
+        IF (reg 4) THEN
+          RULE DONE
+          REMOVE reg 0
+          RETURN DERIVED
+        ENDIF
+      ENDIF
+    ENDIF
+  ENDIF
+  NEXT
+RETURN
+Rule depends on : 
+test-diag-left.t2.m
+
+rule : 10
+test-diag-left(X, Y, MV12, Nodes, Coords), X1 = head(MV12), MV13 = tail(MV12), Y1 = head(MV13), 
+			RestCoords = tail(MV13), (X != X1) NIL (Y != Y1), not(test-nil(MV12)), not(test-nil(MV13)) -o test-diag-left(X - 1, Y - 1, RestCoords, Nodes, Coords).
+test-diag-left.t2.m
+Not persistent
+RULE 10
+ITERATE OVER test-diag-left.t2.m (d) MATCHING
+  MOVE tuple TO reg 0
+  TEST-NIL 0.2 TO reg 1
+  NOT reg 1 TO reg 2
+  IF (reg 2) THEN
+    TAIL 0.2 TO reg 1
+    TEST-NIL reg 1 TO reg 2
+    NOT reg 2 TO reg 3
+    IF (reg 3) THEN
+      HEAD reg 1 TO reg 2
+      HEAD 0.2 TO reg 3
+      OP 0.0 INT NOT EQUAL reg 3 TO reg 4
+      OP 0.1 INT NOT EQUAL reg 2 TO reg 5
+      OP reg 4 BOOL OR reg 5 TO reg 6
+      IF (reg 6) THEN
+        RULE DONE
+        TAIL 0.2 TO reg 1
+        TAIL reg 1 TO reg 2
+        ALLOC test-diag-left.t2.m TO reg 3
+        OP 0.0 INT MINUS INT 1 TO 3.0
+        OP 0.1 INT MINUS INT 1 TO 3.1
+        MOVE reg 2 TO 3.2
+        MOVE 0.3 TO 3.3
+        MOVE 0.4 TO 3.4
+        SEND reg 3 TO reg 3
+        REMOVE reg 0
+        RETURN DERIVED
+      ENDIF
+    ENDIF
+  ENDIF
+  NEXT
+RETURN
+Rule depends on : 
+test-diag-left.t2.m
+
+rule : 11
+test-diag-right(X, Y, MV15, Nodes, Coords), !coord_(OX, OY), (X < 0) NIL (Y >= 8), MV15 = nil -o 
+			send-down(cons(host-id,Nodes), cons(OX,cons(OY,Coords))).
+coord_.t2.m
+test-diag-right.t2.m
+Not persistent
+RULE 11
+ITERATE OVER test-diag-right.t2.m (d) MATCHING
+  MOVE tuple TO reg 0
+  OP 0.0 INT LESSER INT 0 TO reg 1
+  OP 0.1 INT GREATER EQUAL INT 8 TO reg 2
+  OP reg 1 BOOL OR reg 2 TO reg 3
+  IF (reg 3) THEN
+    TEST-NIL 0.2 TO reg 1
+    IF (reg 1) THEN
+      ITERATE OVER coord_.t2.m () MATCHING
+        MOVE tuple TO reg 1
+        RULE DONE
+        ALLOC send-down.t2.m TO reg 2
+        CONS (host::0.3) TO 2.0
+        CONS (1.1::0.4) TO reg 3
+        CONS (1.0::reg 3) TO 2.1
+        SEND reg 2 TO reg 2
+        REMOVE reg 0
+        RETURN DERIVED
+        NEXT
+    ENDIF
+  ENDIF
+  NEXT
+RETURN
+Rule depends on : 
+coord_.t2.m
+send-down.t2.m
+test-diag-right.t2.m
+
+rule : 12
+test-diag-right(X, Y, MV16, Nodes, Coords), X1 = head(MV16), MV17 = tail(MV16), Y1 = head(MV17), 
+			X = X1, Y = Y1, not(test-nil(MV16)), not(test-nil(MV17)) -o 1.
+test-diag-right.t2.m
+Not persistent
+RULE 12
+ITERATE OVER test-diag-right.t2.m (d) MATCHING
+  MOVE tuple TO reg 0
+  TEST-NIL 0.2 TO reg 1
+  NOT reg 1 TO reg 2
+  IF (reg 2) THEN
+    TAIL 0.2 TO reg 1
+    TEST-NIL reg 1 TO reg 2
+    NOT reg 2 TO reg 3
+    IF (reg 3) THEN
+      HEAD reg 1 TO reg 2
+      OP 0.1 INT EQUAL reg 2 TO reg 3
+      IF (reg 3) THEN
+        HEAD 0.2 TO reg 3
+        OP 0.0 INT EQUAL reg 3 TO reg 4
+        IF (reg 4) THEN
+          RULE DONE
+          REMOVE reg 0
+          RETURN DERIVED
+        ENDIF
+      ENDIF
+    ENDIF
+  ENDIF
+  NEXT
+RETURN
+Rule depends on : 
+test-diag-right.t2.m
+
+rule : 13
+test-diag-right(X, Y, MV19, Nodes, Coords), X1 = head(MV19), MV20 = tail(MV19), Y1 = head(MV20), 
+			RestCoords = tail(MV20), (X != X1) NIL (Y != Y1), not(test-nil(MV19)), not(test-nil(MV20)) -o test-diag-right(X - 1, Y + 1, RestCoords, Nodes, Coords).
+test-diag-right.t2.m
+Not persistent
+RULE 13
+ITERATE OVER test-diag-right.t2.m (d) MATCHING
+  MOVE tuple TO reg 0
+  TEST-NIL 0.2 TO reg 1
+  NOT reg 1 TO reg 2
+  IF (reg 2) THEN
+    TAIL 0.2 TO reg 1
+    TEST-NIL reg 1 TO reg 2
+    NOT reg 2 TO reg 3
+    IF (reg 3) THEN
+      HEAD reg 1 TO reg 2
+      HEAD 0.2 TO reg 3
+      OP 0.0 INT NOT EQUAL reg 3 TO reg 4
+      OP 0.1 INT NOT EQUAL reg 2 TO reg 5
+      OP reg 4 BOOL OR reg 5 TO reg 6
+      IF (reg 6) THEN
+        RULE DONE
+        TAIL 0.2 TO reg 1
+        TAIL reg 1 TO reg 2
+        ALLOC test-diag-right.t2.m TO reg 3
+        OP 0.0 INT MINUS INT 1 TO 3.0
+        OP 0.1 INT PLUS INT 1 TO 3.1
+        MOVE reg 2 TO 3.2
+        MOVE 0.3 TO 3.3
+        MOVE 0.4 TO 3.4
+        SEND reg 3 TO reg 3
+        REMOVE reg 0
+        RETURN DERIVED
+      ENDIF
+    ENDIF
+  ENDIF
+  NEXT
+RETURN
+Rule depends on : 
+test-diag-right.t2.m
+
+rule : 14
+send-down(Nodes, Coords), !down_(A), A = host-id -o final-state(Nodes, Coords).
+down_.t2.m
+send-down.t2.m
+Not persistent
+RULE 14
+ITERATE OVER send-down.t2.m (d) MATCHING
+  MOVE tuple TO reg 0
+  ITERATE OVER down_.t2.m () MATCHING
+    MOVE tuple TO reg 1
+    OP 1.0 ADDR EQUAL host TO reg 2
+    IF (reg 2) THEN
+      RULE DONE
+      ALLOC final-state.t2.m TO reg 2
+      MOVE 0.0 TO 2.0
+      MOVE 0.1 TO 2.1
+      SEND reg 2 TO reg 2
+      REMOVE reg 0
+      RETURN DERIVED
+    ENDIF
+    NEXT
+  NEXT
+RETURN
+Rule depends on : 
+down_.t2.m
+final-state.t2.m
+send-down.t2.m
+
+rule : 15
+send-down(Nodes, Coords), !down_(B), host-id != B -o receive-down_(Nodes, Coords).
+down_.t2.m
+send-down.t2.m
+Not persistent
+RULE 15
+ITERATE OVER send-down.t2.m (d) MATCHING
+  MOVE tuple TO reg 0
+  ITERATE OVER down_.t2.m () MATCHING
+    MOVE tuple TO reg 1
+    OP host ADDR NOT EQUAL 1.0 TO reg 2
+    IF (reg 2) THEN
+      RULE DONE
+      ALLOC receive-down_.t2.m TO reg 2
+      MOVE 0.0 TO 2.0
+      MOVE 0.1 TO 2.1
+      SEND reg 2 TO reg 2
+      REMOVE reg 0
+      RETURN DERIVED
+    ENDIF
+    NEXT
+  NEXT
+RETURN
+Rule depends on : 
+down_.t2.m
+receive-down_.t2.m
+send-down.t2.m
+
+predicate : 0
+_init
+affected rule : 0
+PROCESS _init (1):
+RETURN LINEAR
+END PROCESS;
+Predicate depends on : 
+
+predicate : 1
+set-priority
+PROCESS set-priority (1):
+RETURN
+END PROCESS;
+Predicate depends on : 
+
+predicate : 2
+setcolor
+PROCESS setcolor (1):
+RETURN
+END PROCESS;
+Predicate depends on : 
+
+predicate : 3
+setedgelabel
+PROCESS setedgelabel (1):
+RETURN
+END PROCESS;
+Predicate depends on : 
+
+predicate : 4
+write-string
+PROCESS write-string (1):
+RETURN
+END PROCESS;
+Predicate depends on : 
+
+predicate : 5
+add-priority
+PROCESS add-priority (1):
+RETURN
+END PROCESS;
+Predicate depends on : 
+
+predicate : 6
+schedule-next
+PROCESS schedule-next (1):
+RETURN
+END PROCESS;
+Predicate depends on : 
+
+predicate : 7
+setColor2
+PROCESS setColor2 (1):
+RETURN
+END PROCESS;
+Predicate depends on : 
+
+predicate : 8
+propagate-left.t2.m
+affected rule : 2
+PROCESS propagate-left.t2.m (1):
+RETURN
+END PROCESS;
+Predicate depends on : 
+
+predicate : 9
+propagate-right.t2.m
+affected rule : 3
+PROCESS propagate-right.t2.m (1):
+RETURN
+END PROCESS;
+Predicate depends on : 
+
+predicate : 10
+test-and-send-down.t2.m
+affected rule : 4
+PROCESS test-and-send-down.t2.m (1):
+RETURN
+END PROCESS;
+Predicate depends on : 
+
+predicate : 11
+test-y.t2.m
+affected rule : 5
+affected rule : 6
+affected rule : 7
+PROCESS test-y.t2.m (1):
+RETURN
+END PROCESS;
+Predicate depends on : 
+
+predicate : 12
+test-diag-left.t2.m
+affected rule : 8
+affected rule : 9
+affected rule : 10
+PROCESS test-diag-left.t2.m (1):
+RETURN
+END PROCESS;
+Predicate depends on : 
+
+predicate : 13
+test-diag-right.t2.m
+affected rule : 11
+affected rule : 12
+affected rule : 13
+PROCESS test-diag-right.t2.m (1):
+RETURN
+END PROCESS;
+Predicate depends on : 
+
+predicate : 14
+send-down.t2.m
+affected rule : 14
+affected rule : 15
+PROCESS send-down.t2.m (1):
+RETURN
+END PROCESS;
+Predicate depends on : 
+
+predicate : 15
+final-state.t2.m
+PROCESS final-state.t2.m (1):
+RETURN
+END PROCESS;
+Predicate depends on : 
+
+predicate : 16
+left_.t2.m
+PROCESS left_.t2.m (1):
+RETURN
+END PROCESS;
+Predicate depends on : 
+
+predicate : 17
+right_.t2.m
+PROCESS right_.t2.m (1):
+RETURN
+END PROCESS;
+Predicate depends on : 
+
+predicate : 18
+down_.t2.m
+affected rule : 14
+affected rule : 15
+PROCESS down_.t2.m (1):
+RETURN
+END PROCESS;
+Predicate depends on : 
+
+predicate : 19
+coord_.t2.m
+affected rule : 4
+affected rule : 5
+affected rule : 8
+affected rule : 11
+PROCESS coord_.t2.m (1):
+RETURN
+END PROCESS;
+Predicate depends on : 
+
+predicate : 20
+receive-down_.t2.m
+affected rule : 1
+PROCESS receive-down_.t2.m (1):
+RETURN
+END PROCESS;
+Predicate depends on : 
+

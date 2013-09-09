@@ -31,3 +31,8 @@
 (cl-meld:meld-compile "/home/rupesh/blinkybot/tools_meld/meldtools/predicates/test_i.meld" "/home/rupesh/blinkybot/tools_meld/meldtools/predicates/test_i")
 
 (cl-meld:meld-compile "/home/rupesh/blinkybot/tools_meld/meldtools/predicates/test2.meld" "/home/rupesh/blinkybot/tools_meld/meldtools/predicates/test2")
+
+
+(cl-meld:meld-compile "/home/rupesh/blinkybot/tools_meld/meldtools/predicates/8queens-data8-new_t2.meld" "/home/rupesh/blinkybot/tools_meld/meldtools/predicates/8queens_t2")
+
+(cl-meld:meld-compile "/home/rupesh/blinkybot/tools_meld/meldtools/predicates/8queens_t2.meld" "/home/rupesh/blinkybot/tools_meld/meldtools/predicates/t2")
