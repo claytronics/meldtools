@@ -10,10 +10,10 @@
 (cl-meld:meld-compile "/home/rupesh/blinkybot/mergesort.meld" "/home/rupesh/blinkybot/mergesort")
 (cl-meld:meld-compile "/home/rupesh/blinkybot/programs_meld/programs/8queens/8queens-data8.meld" "/home/rupesh/blinkybot/programs_meld/programs/8queens/8queens-data8")
 
-(cl-meld:meld-compile "/home/rupesh/blinkybot/tools_meld/meldtools/predicates/8queens.meld" "/home/rupesh/blinkybot/tools_meld/meldtools/predicates/8queens")
+(cl-meld:meld-compile "/home/rupesh/blinkybot/tools_meld/meldtools/predicates/8queens.meld" "/home/rupesh/blinkybot/tools_meld/meldtools/predicates/8queens/8queens")
 (cl-meld:meld-compile "/home/rupesh/blinkybot/programs_meld/programs/8queens/8queens-data8-new.meld" "/home/rupesh/blinkybot/programs_meld/programs/8queens/8queens_data-8-new")
 
-(cl-meld:meld-compile "/home/rupesh/blinkybot/tools_meld/meldtools/predicates/8queens-data8-new.meld" "/home/rupesh/blinkybot/tools_meld/meldtools/predicates/data")
+(cl-meld:meld-compile "/home/rupesh/blinkybot/tools_meld/meldtools/predicates/8queens-data8-new.meld" "/home/rupesh/blinkybot/tools_meld/meldtools/predicates/8queens/data")
 
 (cl-meld:meld-compile "/home/rupesh/blinkybot/programs_meld/programs/8queens/8queens_original.meld" "/home/rupesh/blinkybot/programs_meld/programs/8queens/8queens_original")
 
