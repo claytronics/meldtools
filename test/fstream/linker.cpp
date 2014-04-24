@@ -159,12 +159,16 @@ int main(int argc,char **argv) {
         return 0;     
     }
 
+    
     // read / write version
     uint32_t major_version, minor_version;
     READ_CODE(&major_version, sizeof(uint32_t));
     READ_CODE(&minor_version, sizeof(uint32_t));
 
-   if(!VERSION_AT_LEAST(0, 5) || VERSION_AT_LEAST(0, 10)){
+     cout <<"major_version : "<< major_version <<endl;
+    cout <<"minor_version : "<< minor_version <<endl;
+   
+   if(!VERSION_AT_LEAST(0, 5) || VERSION_AT_LEAST(0, 11)){
         cout<<"Error : unsupported byte code version\n";
         infile_m.close();
         infile_md.close();
@@ -172,8 +176,6 @@ int main(int argc,char **argv) {
         return 0;
     }
 
-    cout <<"major_version : "<< major_version <<endl;
-    cout <<"minor_version : "<< minor_version <<endl;
 
 
     // read number of predicates
@@ -185,6 +187,20 @@ int main(int argc,char **argv) {
     READ_CODE(&num_nodes, sizeof(uint_val));
 
     SEEK_CODE(num_nodes * 8);
+    
+    
+     //read types
+    if(VERSION_AT_LEAST(0, 10)) {
+      char ntypes;
+      READ_CODE(&ntypes, sizeof(char));
+       cout << "num of types : "<<ntypes<<endl;
+      
+	
+      for(byte i(0); i < ntypes; ++i) {
+	byte types;
+	READ_CODE(&types, sizeof(byte));
+      } 
+    }
 
    // read imported/exported predicates
    if(VERSION_AT_LEAST(0, 9)) {
